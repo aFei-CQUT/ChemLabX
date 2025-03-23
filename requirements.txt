@@ -1,0 +1,19 @@
+# === python版本 ===
+# python = 3.9.21
+
+# === 第三方核心科学计算库 ===
+numpy
+pandas
+matplotlib
+scikit-learn
+
+# === 数据处理与文件操作 ===
+openpyxl                    # 处理 Excel 文件
+opencv-python               # OpenCV 图像处理
+
+# === GUI 相关依赖 ===
+ttkbootstrap                # 第三方主题库（确保名称正确，PyPI 上的包名为 ttkthemes）
+
+# === 标准库（无需安装，仅作说明） ===
+# logging       --> Python 内置
+# tkinter       --> Python 内置
