@@ -5,175 +5,91 @@ import logging
 import sys
 import os
 import re
+import tkinter as tk
 
 # 动态获取路径
 current_script_path = os.path.abspath(__file__)
-project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(current_script_path))))
+project_root = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.dirname(current_script_path)))
+)
 sys.path.insert(0, project_root)
 
 from tkinter import ttk, StringVar
 
-# 导入配置
-from gui.screens.utils.config import ENTRY_LABEL_CONFIG
-
 
 class StringEntriesWidget(ttk.Frame):
-    """动态输入框集合组件（支持数值验证和依赖关系）"""
+    """统一输入框宽度的输入组件"""
 
-    class CachedStringEntryWidget(ttk.Frame):
-        def __init__(self, master, name, default="", text=None, **kwargs):
-            super().__init__(master, **kwargs)
-            self.name = name
-            self.text = name if text is None else text
+    def __init__(self, master, **kwargs):
+        super().__init__(master, **kwargs)
+        self.entries = []
+        self.vars = []
+        self.entries_config = []
 
-            # 标签布局
-            self.label = ttk.Label(self, text=self.text, **ENTRY_LABEL_CONFIG)
-            self.label.place(relx=0, rely=0, relwidth=0.5, relheight=1)
+        # 主容器使用网格布局
+        self.main_frame = ttk.Frame(self)
+        self.main_frame.pack(fill="both", expand=True)
 
-            # 输入值缓存系统
-            self.cached = StringVar(value=default)
-            self.var = StringVar(value=default)
+        # 配置网格列权重
+        self.main_frame.columnconfigure(0, weight=1)  # 标签列
+        self.main_frame.columnconfigure(1, weight=1)  # 输入框列
 
-            # 输入框构建
-            self.entry = ttk.Entry(self, textvariable=self.var)
-            self.entry.place(relx=0.5, rely=0, relwidth=0.5, relheight=1)
-            self._bind_focus_events()
+    def update_entries(self, entries_config):
+        """更新输入框配置"""
+        # 清空现有组件
+        for widget in self.main_frame.winfo_children():
+            widget.destroy()
 
-        def _bind_focus_events(self):
-            """管理焦点事件绑定"""
-            self.entry.bind("<FocusIn>", lambda *args: self._bind_return())
-            self.entry.bind("<FocusOut>", lambda *args: self._unbind_return())
+        # 创建输入行
+        for row_idx, config in enumerate(entries_config):
+            # 标签（居中）
+            label = ttk.Label(
+                self.main_frame, text=config.get("label", ""), anchor="center"
+            )
+            label.grid(row=row_idx, column=0, padx=5, pady=3, sticky="ew")
 
-        def _bind_return(self):
-            """绑定回车验证"""
-            self.bind("<Return>", self.validate_input)
+            # 输入框（右对齐）
+            var = StringVar(value=config.get("default", ""))
+            entry = ttk.Entry(self.main_frame, textvariable=var)
+            entry.grid(row=row_idx, column=1, padx=5, pady=3, sticky="ew")
 
-        def _unbind_return(self):
-            """解绑并触发验证"""
-            self.unbind("<Return>")
-            self.validate_input()
+            # 验证绑定
+            if pattern := config.get("validation_pattern"):
+                entry.bind(
+                    "<FocusOut>", lambda e, p=pattern, v=var: self._validate_input(p, v)
+                )
 
-        def validate_input(self):
-            """通用输入验证逻辑"""
+            self.entries.append(entry)
+            self.vars.append(var)
 
-            def is_number(s):
-                try:
-                    float(s)
-                    return True
-                except ValueError:
-                    return False
+        # 添加空行撑开布局
+        self.main_frame.rowconfigure(len(entries_config), weight=1)
 
-            # 保留数字和基础运算符
-            raw_value = re.sub(r"[^\d+*/().-]+", "", self.var.get())
-            self.var.set(raw_value)
+    def _validate_input(self, pattern, var):
+        value = var.get()
+        if pattern and value and not re.match(pattern, value):
+            logging.warning(f"输入验证失败: '{value}' 不符合正则表达式 '{pattern}'")
+            self.event_generate("<<ValidationFailed>>")  # 验证失败事件
+            return False
+        self.event_generate("<<ParameterChange>>")  # 验证成功事件
+        return True
 
-            # 算式解析逻辑
-            if raw_value != self.cached.get():
-                if not is_number(raw_value):
-                    try:
-                        calculated = str(eval(raw_value))
-                        self.var.set(calculated)
-                        self.cached.set(calculated)
-                        self.master.change()  # 触发全局更新
-                    except:
-                        self.var.set(self.cached.get())
-                else:
-                    self.cached.set(raw_value)
-                    self.master.change()
+    def get_values(self):
+        return [var.get() for var in self.vars]
 
-        def set_state(self, state):
-            """控件状态管理"""
-            self.entry.config(state=state)
-
-        def set_var(self, value):
-            """直接设置变量值"""
-            self.var.set(value)
-            self.cached.set(value)
-
-    def __init__(
-        self,
-        master,
-        names: list,
-        defaults: dict = {},
-        dependences=[],
-        texts: dict = {},
-        cols: int = 2,
-        validate_types: dict = None,  # 显式声明参数
-        **kwargs,
-    ):
-        # 过滤掉自定义参数后再传给父类
-        filtered_kwargs = {k: v for k, v in kwargs.items() if k not in ["validate_types"]}
-        super().__init__(master, **filtered_kwargs)
-
-        # 存储验证类型配置
-        self.validate_types = validate_types if validate_types is not None else {}
-
-        self.entries = [self.CachedStringEntryWidget(self, name, default=defaults.get(name, "")) for name in names]
-        self.entries_table = {entry.name: entry for entry in self.entries}
-        self._setup_dependencies(dependences)
-        self._layout_entries(cols)
-
-    def get_validated_values(self):
-        """获取经过类型验证的输入值字典"""
-        validated = {}
-        for entry in self.entries:
-            name = entry.name
-            raw_value = entry.cached.get()
-            val_type = self.validate_types.get(name, str)  # 默认为字符串类型
-
-            try:
-                # 处理空字符串的情况
-                if raw_value.strip() == "":
-                    validated[name] = None
-                    continue
-
-                # 类型转换
-                validated[name] = val_type(raw_value)
-            except (ValueError, TypeError) as e:
-                logging.error(f"值转换失败: {name}={raw_value} ({val_type}): {str(e)}")
-                validated[name] = None  # 或根据需求抛出异常
-        return validated
-
-    def _setup_dependencies(self, dependences):
-        """设置字段间依赖关系"""
-
-        def create_trace(affected, func, args):
-            def update_affected(*_):
-                result = func(*[self.entries_table[arg].cached.get() for arg in args])
-                self.entries_table[affected].var.set(result)
-                self.entries_table[affected].cached.set(result)
-
-            return update_affected
-
-        for source, target, func, args in dependences:
-            self.entries_table[source].cached.trace_add("write", create_trace(target, func, args))
-
-    def _layout_entries(self, cols):
-        """动态网格布局"""
-        rows = (len(self.entries) + cols - 1) // cols
-        for idx, entry in enumerate(self.entries):
-            entry.place(relx=(idx % cols) / cols, rely=(idx // cols) / rows, relwidth=1 / cols, relheight=1 / rows)
+    def set_values(self, values):
+        if len(values) != len(self.vars):
+            logging.error("值数量不匹配")
+            return False
+        for var, val in zip(self.vars, values):
+            var.set(val)
+        return True
 
     def clear(self):
-        """清空所有条目的值"""
-        for entry in self.entries:
-            entry.set_var("")
+        [var.set("") for var in self.vars]
 
-    def dump(self):
-        """返回所有条目的值"""
-        return {entry.name: entry.cached.get() for entry in self.entries}
-
-    def set_states(self, state, names):
-        """设置特定条目的状态"""
-        for name in names:
-            self.entries_table[name].set_state(state)
-
-    def set_all_states(self, state):
-        """设置所有条目的状态"""
-        for entry in self.entries:
-            entry.set_state(state)
-
-    def set_value(self, key, value):
-        """设置特定条目的值"""
-        if key in self.entries_table:
-            self.entries_table[key].set_var(value)
+    def validate_all(self):
+        return all(
+            self._validate_input(c.get("validation_pattern"), v)
+            for c, v in zip(self.entries_config, self.vars)
+        )

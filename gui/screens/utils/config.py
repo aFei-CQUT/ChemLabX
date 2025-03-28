@@ -1,3 +1,5 @@
+# config.py
+
 # 快捷键对应event.state的数值
 SHORTCUT_CODE = {"Shift": 0x1, "Control": 0x4, "Command": 0x8, "Alt": 0x20000}
 

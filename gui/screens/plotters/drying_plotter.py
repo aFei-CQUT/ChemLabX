@@ -6,7 +6,9 @@ import os
 
 # 动态获取路径
 current_script_path = os.path.abspath(__file__)
-project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(current_script_path))))
+project_root = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.dirname(current_script_path)))
+)
 sys.path.insert(0, project_root)
 
 import zipfile
@@ -53,7 +55,9 @@ class Drying_Plotter:
     def _validate_data(self):
         """验证必要绘图数据是否存在"""
         required_attrs = ["τ_bar", "X_bar", "U"]
-        missing = [attr for attr in required_attrs if not hasattr(self.calculator, attr)]
+        missing = [
+            attr for attr in required_attrs if not hasattr(self.calculator, attr)
+        ]
         if missing:
             raise AttributeError(f"缺少必要数据: {', '.join(missing)}")
 

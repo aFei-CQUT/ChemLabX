@@ -6,7 +6,9 @@ import os
 
 # 动态获取路径
 current_script_path = os.path.abspath(__file__)
-project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(current_script_path))))
+project_root = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.dirname(current_script_path)))
+)
 sys.path.insert(0, project_root)
 
 import numpy as np
@@ -163,8 +165,12 @@ class Filteration_Plotter:
         创建初拟合图表
         """
         plt.figure(figsize=(8, 6))
-        plt.scatter(q_to_fit, delta_theta_over_delta_q_to_fit, color="red", label="拟合数据")
-        plt.plot(q_to_fit, fit_slope * q_to_fit + fit_intercept, color="blue", label="拟合线")
+        plt.scatter(
+            q_to_fit, delta_theta_over_delta_q_to_fit, color="red", label="拟合数据"
+        )
+        plt.plot(
+            q_to_fit, fit_slope * q_to_fit + fit_intercept, color="blue", label="拟合线"
+        )
 
         center_x = np.mean(q_to_fit)
         center_y = np.mean(delta_theta_over_delta_q_to_fit)
@@ -186,7 +192,9 @@ class Filteration_Plotter:
         plt.xlabel("q 值")
         plt.ylabel("Δθ/Δq")
         plt.legend(loc="upper left")
-        plt.figtext(0.5, 0.01, f"第{group_index+1}组数据初拟合", ha="center", fontsize=15)
+        plt.figtext(
+            0.5, 0.01, f"第{group_index+1}组数据初拟合", ha="center", fontsize=15
+        )
 
         # 设置轴样式
         self.set_axes_style()
@@ -209,7 +217,9 @@ class Filteration_Plotter:
         创建重新拟合图表
         """
         plt.figure(figsize=(8, 6))
-        plt.scatter(filtered_data[:, 0], filtered_data[:, 1], color="red", label="拟合数据")
+        plt.scatter(
+            filtered_data[:, 0], filtered_data[:, 1], color="red", label="拟合数据"
+        )
         plt.plot(
             filtered_data[:, 0],
             refit_slope * filtered_data[:, 0] + refit_intercept,
@@ -262,7 +272,9 @@ class Filteration_Plotter:
                 delta_theta_over_delta_q_list,
                 q_list,
             ) = self.calculator.process_single_group_data(group_index)
-            model, _ = self.calculator.perform_linear_fit(q_to_fit, delta_theta_over_delta_q_to_fit)
+            model, _ = self.calculator.perform_linear_fit(
+                q_to_fit, delta_theta_over_delta_q_to_fit
+            )
             fit_slope = model.coef_[0]
             fit_intercept = model.intercept_
 
@@ -282,7 +294,9 @@ class Filteration_Plotter:
         plt.xlabel("q 值")
         plt.ylabel("Δθ/Δq")
         plt.legend(loc="upper left")
-        plt.figtext(0.5, 0.01, "三组数据保留所有数据点初拟合对比", ha="center", fontsize=15)
+        plt.figtext(
+            0.5, 0.01, "三组数据保留所有数据点初拟合对比", ha="center", fontsize=15
+        )
 
         self.set_axes_style()
         self.save_image("7")
@@ -298,7 +312,8 @@ class Filteration_Plotter:
             )
             plt.plot(
                 self.q_to_refit_lists[i],
-                self.refit_slopes[i] * self.q_to_refit_lists[i] + self.refit_intercepts[i],
+                self.refit_slopes[i] * self.q_to_refit_lists[i]
+                + self.refit_intercepts[i],
                 label=f"拟合线{i+1}",
             )
             self.add_auxiliary_lines(
@@ -310,7 +325,9 @@ class Filteration_Plotter:
         plt.xlabel("q 值")
         plt.ylabel("Δθ/Δq")
         plt.legend(loc="upper left")
-        plt.figtext(0.5, 0.01, "三组数据排除异常值后再拟合对比", ha="center", fontsize=15)
+        plt.figtext(
+            0.5, 0.01, "三组数据排除异常值后再拟合对比", ha="center", fontsize=15
+        )
 
         self.set_axes_style()
         self.save_image("8")
@@ -349,7 +366,9 @@ class Filteration_Plotter:
             ) = self.calculator.process_single_group_data(i)
 
             # 执行线性拟合
-            model, _ = self.calculator.perform_linear_fit(q_to_fit, delta_theta_over_delta_q_to_fit)
+            model, _ = self.calculator.perform_linear_fit(
+                q_to_fit, delta_theta_over_delta_q_to_fit
+            )
             fit_slope = model.coef_[0]
             fit_intercept = model.intercept_
 
@@ -376,13 +395,17 @@ class Filteration_Plotter:
             ) = self.calculator.process_single_group_data(i)
 
             # 执行线性拟合
-            model, fit_data = self.calculator.perform_linear_fit(q_to_fit, delta_theta_over_delta_q_to_fit)
+            model, fit_data = self.calculator.perform_linear_fit(
+                q_to_fit, delta_theta_over_delta_q_to_fit
+            )
 
             # 获取异常值
             outliers = self.calculator.detect_outliers(fit_data)
 
             # 重新拟合数据并移除异常值
-            refit_model, filtered_data = self.calculator.refit_data_after_outlier_removal(fit_data, outliers)
+            refit_model, filtered_data = (
+                self.calculator.refit_data_after_outlier_removal(fit_data, outliers)
+            )
 
             refit_slope = refit_model.coef_[0]
             refit_intercept = refit_model.intercept_

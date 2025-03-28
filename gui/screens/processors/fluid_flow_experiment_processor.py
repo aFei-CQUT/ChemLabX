@@ -6,7 +6,9 @@ import os
 
 # 动态获取项目根路径
 current_script_path = os.path.abspath(__file__)
-project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(current_script_path))))
+project_root = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.dirname(current_script_path)))
+)
 sys.path.insert(0, project_root)
 
 from gui.screens.calculators.fluid_flow_calculator import (
@@ -14,7 +16,10 @@ from gui.screens.calculators.fluid_flow_calculator import (
     Centrifugal_Pump_Characteristics_Calculator,
     Auxiliary,
 )
-from gui.screens.plotters.fluid_flow_plotter import Fluid_Flow_Plotter, Centrifugal_Pump_Characteristics_Plotter
+from gui.screens.plotters.fluid_flow_plotter import (
+    Fluid_Flow_Plotter,
+    Centrifugal_Pump_Characteristics_Plotter,
+)
 
 
 class Fluid_Flow_Expriment_Processor:
@@ -50,9 +55,13 @@ class Fluid_Flow_Expriment_Processor:
         """处理离心泵特性实验数据"""
         pump_file_path = self.auxiliary.identify_file_type(self.file_paths[1])
         if pump_file_path == "pump":
-            self.pump_calculator = Centrifugal_Pump_Characteristics_Calculator(self.file_paths[1])
+            self.pump_calculator = Centrifugal_Pump_Characteristics_Calculator(
+                self.file_paths[1]
+            )
             ans2, df2, params_H, params_N, params_η = self.pump_calculator.process()
-            self.pump_plotter = Centrifugal_Pump_Characteristics_Plotter(self.pump_calculator)
+            self.pump_plotter = Centrifugal_Pump_Characteristics_Plotter(
+                self.pump_calculator
+            )
             return ans2, df2, params_H, params_N, params_η
         else:
             raise ValueError("第二个文件不是离心泵数据文件")
@@ -108,7 +117,9 @@ if __name__ == "__main__":
     fluid_ans, fluid_df = processor.process_fluid_flow()
 
     # 处理离心泵数据
-    pump_ans, pump_df, pump_params_H, pump_params_N, pump_params_η = processor.process_pump_characteristics()
+    pump_ans, pump_df, pump_params_H, pump_params_N, pump_params_η = (
+        processor.process_pump_characteristics()
+    )
 
     # 生成所有图表
     processor.generate_all_plots()

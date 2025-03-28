@@ -6,7 +6,9 @@ import os
 
 # 动态获取路径
 current_script_path = os.path.abspath(__file__)
-project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(current_script_path))))
+project_root = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.dirname(current_script_path)))
+)
 sys.path.insert(0, project_root)
 
 import numpy as np
@@ -48,7 +50,10 @@ class Fluid_Flow_Calculator:
 
         # 构造压降数组（前9个为kPa数据，后10个为mmH2O数据）
         ΔPf = np.concatenate(
-            [1000 * df.iloc[:9, 2].values, ρ * g * df.iloc[9:, 3].values / 1000]  # kPa → Pa  # mmH2O → Pa
+            [
+                1000 * df.iloc[:9, 2].values,
+                ρ * g * df.iloc[9:, 3].values / 1000,
+            ]  # kPa → Pa  # mmH2O → Pa
         )
 
         # 计算流速(m/s)

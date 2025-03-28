@@ -1,9 +1,14 @@
+# heat_transfer_calculator.py
+
+# 内置库
 import sys
 import os
 
-# 动态获取项目根路径
+# 动态获取路径
 current_script_path = os.path.abspath(__file__)
-project_root = os.path.dirname(os.path.dirname(os.path.dirname(current_script_path)))
+project_root = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.dirname(current_script_path)))
+)
 sys.path.insert(0, project_root)
 
 import numpy as np
@@ -29,7 +34,12 @@ class Heat_Transfer_Calculator:
 
     def _categorize_files(self, paths):
         """根据文件名分类文件"""
-        file_dict = {"无强化套管": None, "有强化套管": None, "预处理_无": None, "预处理_有": None}
+        file_dict = {
+            "无强化套管": None,
+            "有强化套管": None,
+            "预处理_无": None,
+            "预处理_有": None,
+        }
 
         for path in paths:
             if "无强化套管" in path and "预处理" not in path:
@@ -175,7 +185,9 @@ class Heat_Transfer_Calculator:
             t_in = dataset["t_in"]
             t_out = dataset["t_out"]
 
-            ans_original_data, ans_calculated_data, data_for_fit = self.preprocess_data(Δp_kb, t_in, t_out)
+            ans_original_data, ans_calculated_data, data_for_fit = self.preprocess_data(
+                Δp_kb, t_in, t_out
+            )
 
             # 检查并过滤掉非正值
             valid_indices = (data_for_fit[:, 0] > 0) & (data_for_fit[:, 1] > 0)
@@ -217,10 +229,10 @@ class Heat_Transfer_Calculator:
 if __name__ == "__main__":
     # 定义CSV文件路径列表
     csv_file_paths = [
-        "原始数据_无强化套管.csv",
-        "原始数据_有强化套管.csv",
-        "数据预处理_无强化套管.csv",
-        "数据预处理_有强化套管.csv",
+        "./csv_data/传热/传热原始数据记录表(非)/原始数据_无强化套管.csv",
+        "./csv_data/传热/传热原始数据记录表(非)/原始数据_有强化套管.csv",
+        "./csv_data/传热/传热原始数据记录表(非)/数据预处理_无强化套管.csv",
+        "./csv_data/传热/传热原始数据记录表(非)/数据预处理_有强化套管.csv",
     ]
 
     # 实例化传热计算器

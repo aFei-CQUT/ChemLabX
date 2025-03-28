@@ -1,5 +1,15 @@
+# filteration_calculator.py
+
+# 内置库
 import sys
 import os
+
+# 动态获取路径
+current_script_path = os.path.abspath(__file__)
+project_root = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.dirname(current_script_path)))
+)
+sys.path.insert(0, project_root)
 import numpy as np
 import pandas as pd
 from sklearn.linear_model import LinearRegression
@@ -75,7 +85,9 @@ class Filteration_Calculator:
         :param threshold: 异常值阈值
         :return: 异常值索引
         """
-        z_scores = np.abs((fit_data[:, 1] - np.mean(fit_data[:, 1])) / np.std(fit_data[:, 1]))
+        z_scores = np.abs(
+            (fit_data[:, 1] - np.mean(fit_data[:, 1])) / np.std(fit_data[:, 1])
+        )
         outliers = np.where(z_scores > threshold)[0]
         return outliers
 
@@ -108,7 +120,9 @@ class Filteration_Calculator:
         :param group_index: 组索引
         :return: 拟合所需的数据
         """
-        self.selected_data = self.data.iloc[0:11, 1 + 3 * group_index : 4 + 3 * group_index]
+        self.selected_data = self.data.iloc[
+            0:11, 1 + 3 * group_index : 4 + 3 * group_index
+        ]
         self.data_array = self.selected_data.values
         self.data_array[:, 0] = self.data_array[:, 0] / 100  # 转换为标准单位
 
@@ -116,7 +130,9 @@ class Filteration_Calculator:
         self.delta_q_list = np.full(len(self.delta_theta_list), self.deltaQ)
         self.delta_theta_over_delta_q_list = self.delta_theta_list / self.delta_q_list
 
-        self.q_list = np.linspace(0, len(self.delta_theta_list) * self.deltaQ, len(self.delta_theta_list) + 1)
+        self.q_list = np.linspace(
+            0, len(self.delta_theta_list) * self.deltaQ, len(self.delta_theta_list) + 1
+        )
         self.q_to_fit = (self.q_list[:-1] + self.q_list[1:]) / 2
         self.delta_theta_over_delta_q_to_fit = self.delta_theta_over_delta_q_list
 
@@ -146,7 +162,9 @@ class Filteration_Calculator:
                 self.q_list,
             ) = self.process_single_group_data(group_index)
 
-            self.fit_model, self.fit_data = self.perform_linear_fit(self.q_to_fit, self.delta_theta_over_delta_q_to_fit)
+            self.fit_model, self.fit_data = self.perform_linear_fit(
+                self.q_to_fit, self.delta_theta_over_delta_q_to_fit
+            )
             self.fit_slope = self.fit_model.coef_[0]
             self.fit_intercept = self.fit_model.intercept_
 
@@ -156,8 +174,8 @@ class Filteration_Calculator:
 
             self.outliers = self.detect_outliers(self.fit_data)
             if len(self.outliers) > 0:
-                self.refit_model, self.filtered_data = self.refit_data_after_outlier_removal(
-                    self.fit_data, self.outliers
+                self.refit_model, self.filtered_data = (
+                    self.refit_data_after_outlier_removal(self.fit_data, self.outliers)
                 )
                 self.refit_slope = self.refit_model.coef_[0]
                 self.refit_intercept = self.refit_model.intercept_
@@ -167,7 +185,9 @@ class Filteration_Calculator:
                 print("排除异常值后截距:", self.refit_intercept)
 
                 self.q_to_refit_lists.append(self.filtered_data[:, 0])
-                self.delta_theta_over_delta_q_to_refit_lists.append(self.filtered_data[:, 1])
+                self.delta_theta_over_delta_q_to_refit_lists.append(
+                    self.filtered_data[:, 1]
+                )
                 self.refit_slopes.append(self.refit_slope)
                 self.refit_intercepts.append(self.refit_intercept)
 

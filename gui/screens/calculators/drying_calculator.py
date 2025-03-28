@@ -6,7 +6,9 @@ import os
 
 # 动态获取路径
 current_script_path = os.path.abspath(__file__)
-project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(current_script_path))))
+project_root = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.dirname(current_script_path)))
+)
 sys.path.insert(0, project_root)
 
 import pandas as pd
@@ -123,7 +125,9 @@ class Drying_Calculator:
         self.V_t = self.V_t0 * (273 + self.t) / (273 + t0)
 
         # 存储高级结果
-        self.results.update({"α": self.α.tolist(), "V_t0": float(self.V_t0), "V_t": self.V_t.tolist()})
+        self.results.update(
+            {"α": self.α.tolist(), "V_t0": float(self.V_t0), "V_t": self.V_t.tolist()}
+        )
 
     def run_full_calculation(self):
         """执行完整计算流程"""

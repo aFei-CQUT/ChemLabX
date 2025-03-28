@@ -40,7 +40,9 @@ class Distillation_Experiment_Processor:
         self.R = R
 
         # 初始化计算引擎
-        self.calculator = Distillation_Calculator(file_path=file_path, R=R, αm=αm, F=F, tS=tS, tF=tF)
+        self.calculator = Distillation_Calculator(
+            file_path=file_path, R=R, αm=αm, F=F, tS=tS, tF=tF
+        )
 
         # 初始化可视化引擎
         self.plotter = Distillation_Plotter(self.calculator)
@@ -111,7 +113,9 @@ class Distillation_Experiment_Processor:
         """获取各结果文件路径"""
         return {
             "original_data": self.file_path,
-            "text_results": self.output_dir / "计算结果" / f"{self.base_name}_results.txt",
+            "text_results": self.output_dir
+            / "计算结果"
+            / f"{self.base_name}_results.txt",
             "visualization": self.output_dir / "拟合图结果" / f"{self.base_name}.png",
             "archive": self.output_dir / f"{self.base_name}_results.zip",
         }
@@ -129,6 +133,12 @@ if __name__ == "__main__":
 
     # 处理全回流 (R=+∞)
     processor_infinite = Distillation_Experiment_Processor(
-        file_path=DATA_FILE, R=10000, αm=2.0, F=80, tS=30, tF=26, output_dir="实验结果/全回流"
+        file_path=DATA_FILE,
+        R=10000,
+        αm=2.0,
+        F=80,
+        tS=30,
+        tF=26,
+        output_dir="实验结果/全回流",
     )
     processor_infinite.process_experiment()

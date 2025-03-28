@@ -1,11 +1,14 @@
 # extraction_calculator.py
 
+# 内置库
 import sys
 import os
 
-# 动态获取项目根路径
+# 动态获取路径
 current_script_path = os.path.abspath(__file__)
-project_root = os.path.dirname(os.path.dirname(os.path.dirname(current_script_path)))
+project_root = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.dirname(current_script_path)))
+)
 sys.path.insert(0, project_root)
 
 import logging
@@ -15,7 +18,9 @@ from scipy.integrate import trapezoid
 from scipy.interpolate import interp1d
 
 # 配置日志设置
-logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")
+logging.basicConfig(
+    level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 
 class Extraction_Calculator:
@@ -49,9 +54,13 @@ class Extraction_Calculator:
         """
         数据预处理，计算相关参数。
         """
-        self.Vs_B_rect = self.Vs_S * np.sqrt(self.ρ_S * (7900 - self.ρ_B) / (self.ρ_B * (7900 - self.ρ_S)))
+        self.Vs_B_rect = self.Vs_S * np.sqrt(
+            self.ρ_S * (7900 - self.ρ_B) / (self.ρ_B * (7900 - self.ρ_S))
+        )
 
-        self.ans1 = (self.c_NaOH * self.V_NaOH_used * 1e-6 * self.M_B) / (self.ρ_B * self.V_to_be_titrated * 1e-6)
+        self.ans1 = (self.c_NaOH * self.V_NaOH_used * 1e-6 * self.M_B) / (
+            self.ρ_B * self.V_to_be_titrated * 1e-6
+        )
         self.X_Rb, self.X_Rt, self.Y_Eb = self.ans1[0], self.ans1[1], self.ans1[2]
 
         self.B = self.ρ_B * self.Vs_B * 1e-3  # 萃取剂体积 (m^3)
@@ -133,7 +142,9 @@ class Extraction_Calculator:
             one_over_Y5star_minus_Y5 = 1 / (Y5star_data - Y5_Eb_data)
 
             # 将当前实验组的数据存入列表
-            self.data5_for_graph_integral.append([Y5_Eb_data, X_Rb_data, Y5star_data, one_over_Y5star_minus_Y5])
+            self.data5_for_graph_integral.append(
+                [Y5_Eb_data, X_Rb_data, Y5star_data, one_over_Y5star_minus_Y5]
+            )
 
             # 插值平滑曲线
             interp_func = interp1d(Y5_Eb_data, one_over_Y5star_minus_Y5, kind="cubic")
@@ -141,7 +152,9 @@ class Extraction_Calculator:
             one_over_Y5star_minus_Y5_smooth = interp_func(Y5_Eb_data_smooth)
 
             # 计算积分并保存
-            integral_value = trapezoid(one_over_Y5star_minus_Y5_smooth, Y5_Eb_data_smooth)
+            integral_value = trapezoid(
+                one_over_Y5star_minus_Y5_smooth, Y5_Eb_data_smooth
+            )
             self.integral_values.append(integral_value)
 
         # 保存积分结果到ans3

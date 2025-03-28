@@ -7,133 +7,117 @@ import logging
 import traceback
 import tkinter as tk
 from pathlib import Path
-from tkinter import Label, PhotoImage, Toplevel, messagebox, ttk, Button, filedialog, Canvas
+from tkinter import (
+    Label,
+    Toplevel,
+    messagebox,
+    ttk,
+    filedialog,
+)
 from PIL import Image, ImageTk
 import pandas as pd
 
-# 配置日志设置
-logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-# 设置第三方库的日志级别
-logging.getLogger("matplotlib").setLevel(logging.WARNING)
-logging.getLogger("PIL").setLevel(logging.WARNING)
-logging.getLogger("pandas").setLevel(logging.WARNING)
 
 # 动态获取项目根路径
 current_script_path = os.path.abspath(__file__)
 project_root = Path(current_script_path).parents[2]  # 向上3级到项目根
 sys.path.insert(0, str(project_root))
 
-# 导入界面配置和小部件
-from gui.screens.utils.config import MAIN_FRAME_CONFIG, SCREEN_CONFIG
-
+# 导入基类和组件
+from gui.screens.common_screens.base_screen import Base_Screen
 from gui.screens.common_widgets.plot_widget import PlotWidget
-from gui.screens.common_widgets.table_widget import TableWidget
-
-# 导入计算器
-from gui.screens.calculators.oxygen_desorption_calculator import Oxygen_Desorption_Calculator, Packed_Tower_Calculator
+from gui.screens.common_widgets.string_entries_widget import StringEntriesWidget
 
 # 导入处理器
-from gui.screens.processors.oxygen_desorption_experiment_processor import Oxygen_Desorption_Experiment_Processor
+from gui.screens.processors.oxygen_desorption_experiment_processor import (
+    Oxygen_Desorption_Experiment_Processor,
+)
 
 
-class Oxygen_Desorption_Screen(ttk.Frame):
+# 配置日志
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+)
+logging.getLogger("matplotlib").setLevel(logging.WARNING)
+logging.getLogger("PIL").setLevel(logging.WARNING)
+logging.getLogger("pandas").setLevel(logging.WARNING)
+
+
+class Oxygen_Desorption_Screen(Base_Screen):
     """
-    氧解吸实验界面类，包含数据处理、显示和可视化功能
+    氧解吸实验界面类（继承自Base_Screen）
     """
 
-    RAW_COLS = ["序号", "水流量(L/h)", "空气流量(m³/h)", "压差(mmH2O)", "入口浓度(mg/L)", "出口浓度(mg/L)", "温度(℃)"]
+    RAW_COLS = [
+        "序号",
+        "水流量(L/h)",
+        "空气流量(m³/h)",
+        "压差(mmH2O)",
+        "入口浓度(mg/L)",
+        "出口浓度(mg/L)",
+        "温度(℃)",
+    ]
     RESULT_COLS = ["实验组别", "液相流量(mol/s)", "气相流量(mol/s)", "传质系数Kxa"]
 
     def __init__(self, window):
-        super().__init__(window, **SCREEN_CONFIG)
-        self.window = window
-        self.file_paths = {}  # 存储四个文件的路径
-        self.processed_data = None
-        self.current_page = 0
+        # 显式声明按钮属性
+        self.process_btn = None
+        self.plot_btn = None
+        super().__init__(window)
+        self.window.protocol("WM_DELETE_WINDOW", self._safe_close)  # 绑定关闭协议
+        self.file_paths = {}
         self.images_paths = []
-        self._init_components()
-        self.window.protocol("WM_DELETE_WINDOW", self.close_window)
+        self.experiment_processor = None
+        self._init_custom_components()
 
-    def _init_components(self):
-        """初始化界面组件"""
-        self.main_paned = ttk.PanedWindow(self, orient="horizontal")
-        self.main_paned.pack(expand=True, fill="both")
-
-        # 左侧面板
-        self.left_frame = ttk.Frame(self.main_paned, **MAIN_FRAME_CONFIG)
-        self.main_paned.add(self.left_frame, weight=1)
-
-        # 右侧面板
-        self.right_frame = ttk.Frame(self.main_paned, **MAIN_FRAME_CONFIG)
-        self.main_paned.add(self.right_frame, weight=2)
-
-        self._init_left_panel()
-        self._init_right_panel()
-
-    def _init_left_panel(self):
-        """初始化左侧操作面板"""
-        # 文件选择区域
-        file_select_frame = ttk.LabelFrame(self.left_frame, text="数据文件选择")
-        file_select_frame.pack(fill="x", padx=5, pady=5)
-
-        # 添加"导入所有文件"按钮
-        ttk.Button(file_select_frame, text="导入所有文件", command=self._import_all_files).grid(
-            row=0, column=0, columnspan=3, pady=5, sticky="ew"
+    def _init_custom_components(self):
+        """初始化氧解吸特有组件"""
+        # 覆盖原始表格配置
+        self.raw_table.update_columns(self.RAW_COLS, [100] * len(self.RAW_COLS))
+        self.result_table.update_columns(
+            self.RESULT_COLS, [150] * len(self.RESULT_COLS)
         )
 
-        # 文件显示区域
-        ttk.Label(file_select_frame, text="已选择文件:").grid(row=1, column=0, sticky="w")
-        self.file_listbox = tk.Listbox(file_select_frame, height=4, width=40)
-        self.file_listbox.grid(row=2, column=0, columnspan=3, padx=5, pady=5, sticky="ew")
+        # 配置参数输入
+        self._init_parameter_input()
 
-        # 操作按钮区域
-        button_frame = ttk.Frame(self.left_frame)
-        button_frame.pack(fill="x", padx=5, pady=5)
+        # 绑定处理按钮和绘图按钮
+        self._bind_buttons()
 
-        self.process_btn = ttk.Button(button_frame, text="处理数据", command=self.process_data, state="disabled")
-        self.process_btn.pack(side="left", padx=5)
+    def _bind_buttons(self):
+        """动态绑定基类创建的按钮实例"""
+        # 查找基类中"数据处理"按钮所在的Frame
+        data_frame = self.left_frame.nametowidget("data_btn_frame")
 
-        self.plot_btn = ttk.Button(button_frame, text="生成图表", command=self.plot_graph, state="disabled")
-        self.plot_btn.pack(side="left", padx=5)
+        # 遍历Frame中的子组件
+        for child in data_frame.winfo_children():
+            if isinstance(child, ttk.Button):
+                text = child["text"]
+                if text == "处理数据":
+                    self.process_btn = child
+                elif text == "绘制图形":
+                    self.plot_btn = child
 
-        # 原始数据表格
-        self.raw_data_display = ttk.LabelFrame(self.left_frame, text="原始数据预览")
-        self.raw_data_display.pack(fill="both", expand=True, padx=5, pady=5)
-        self.raw_data_table = TableWidget(self.raw_data_display, self.RAW_COLS, widths=[10] * len(self.RAW_COLS))
-        self.raw_data_table.pack(fill="both", expand=True)
+    def _init_parameter_input(self):
+        """初始化参数输入组件（已移除水温和大气压）"""
+        self.param_widget = ttk.Frame(self.left_frame)
+        self.param_widget.pack(fill="x", padx=5, pady=5)
 
-        # 结果数据表格
-        self.res_data_display = ttk.LabelFrame(self.left_frame, text="处理结果")
-        self.res_data_display.pack(fill="both", expand=True, padx=5, pady=5)
-        self.res_data_table = TableWidget(self.res_data_display, self.RESULT_COLS, widths=[15] * len(self.RESULT_COLS))
-        self.res_data_table.pack(fill="both", expand=True)
+        # 配置参数输入（已无参数）
+        param_config = []  # 空配置，不创建任何输入
+        self.param_entries = StringEntriesWidget(self.param_widget)
+        self.param_entries.update_entries(param_config)
+        self.param_entries.pack(fill="x", padx=5, pady=5)
+        self.bind_parameter_change(self.param_entries)
 
-    def _init_right_panel(self):
-        """初始化右侧可视化面板"""
-        self.right_paned = ttk.PanedWindow(self.right_frame, orient="vertical")
-        self.right_paned.pack(fill="both", expand=True)
-
-        # 图像显示区域
-        self.image_panel = ttk.Frame(self.right_paned)
-        self.right_paned.add(self.image_panel, weight=1)
-        self.image_canvas = Canvas(self.image_panel)
-        self.image_canvas.pack(fill="both", expand=True)
-        self.image_canvas.bind("<Configure>", self.on_resize)
-
-        # 分页控制
-        self.page_label = ttk.Label(self.right_frame, text="Page 1/1")
-        self.page_label.pack(side="top", padx=5, pady=5)
-
-        # 导航按钮
-        nav_frame = ttk.Frame(self.right_frame)
-        nav_frame.pack(side="bottom", fill="x", padx=5, pady=10)
-        self.prev_btn = ttk.Button(nav_frame, text="上一页", command=self.prev_page, state="disabled")
-        self.prev_btn.pack(side="left", padx=5)
-        self.next_btn = ttk.Button(nav_frame, text="下一页", command=self.next_page, state="disabled")
-        self.next_btn.pack(side="left", padx=5)
+    def load_data(self):
+        """重写基类方法，执行文件导入逻辑"""
+        self._import_all_files()
 
     def _import_all_files(self):
-        """一次性导入所有需要的文件"""
+        """文件导入方法"""
+        # 弹出文件选择对话框，允许用户多选CSV文件
         file_paths = filedialog.askopenfilenames(
             title="选择氧解吸实验数据文件(请同时选择干填料、湿填料、水流量一定和空气流量一定文件)",
             filetypes=[("CSV文件", "*.csv")],
@@ -142,216 +126,131 @@ class Oxygen_Desorption_Screen(ttk.Frame):
         if not file_paths:
             return
 
-        # 清空现有文件路径
-        self.file_paths = {}
-        self.file_listbox.delete(0, tk.END)
-
-        # 根据文件名自动分类文件
-        for file_path in file_paths:
-            filename = os.path.basename(file_path).lower()
-
+        # 根据文件名关键词分类文件路径
+        self.file_paths.clear()
+        for path in file_paths:
+            filename = Path(path).name
             if "干填料" in filename:
-                self.file_paths["dry_packed"] = file_path
-                self.file_listbox.insert(tk.END, f"干填料: {file_path}")
+                key = "dry_packed"
             elif "湿填料" in filename:
-                self.file_paths["wet_packed"] = file_path
-                self.file_listbox.insert(tk.END, f"湿填料: {file_path}")
+                key = "wet_packed"
             elif "水流量一定" in filename:
-                self.file_paths["water_constant"] = file_path
-                self.file_listbox.insert(tk.END, f"水流量一定: {file_path}")
+                key = "water_constant"
             elif "空气流量一定" in filename:
-                self.file_paths["air_constant"] = file_path
-                self.file_listbox.insert(tk.END, f"空气流量一定: {file_path}")
+                key = "air_constant"
+            else:
+                continue
+            self.file_paths[key] = path
 
-        # 检查是否所有文件都已选择并加载预览
+        # 验证文件完整性并更新界面状态
         self._check_files_complete()
+
+        # 加载首个文件（干填料）的预览数据
         if "dry_packed" in self.file_paths:
             self._load_data_preview(self.file_paths["dry_packed"])
 
     def _check_files_complete(self):
-        """检查是否所有必需文件都已选择"""
-        required_files = ["dry_packed", "wet_packed", "water_constant", "air_constant"]
-        if all(f in self.file_paths for f in required_files):
-            self.process_btn.config(state="normal")
+        """验证文件完整性"""
+        required = ["dry_packed", "wet_packed", "water_constant", "air_constant"]
+        if all(k in self.file_paths for k in required):
+            if self.process_btn:
+                self.process_btn.config(state="normal")
+            self.status_var.set("就绪")
         else:
-            self.process_btn.config(state="disabled")
-            missing_files = [f for f in required_files if f not in self.file_paths]
-            messagebox.showwarning("警告", f"缺少以下文件: {', '.join(missing_files)}\n请确保选择了所有必需文件")
+            if self.process_btn:
+                self.process_btn.config(state="disabled")
+            missing = [k for k in required if k not in self.file_paths]
+            messagebox.showwarning("文件缺失", f"缺少必要文件: {', '.join(missing)}")
 
-    def _load_data_preview(self, file_path):
-        """加载数据预览到表格"""
+    def _load_data_preview(self, path):
+        """加载预览数据到表格"""
         try:
-            df = pd.read_csv(file_path, header=None)
-            # 数据从第3行开始，前两行是标题
-            data = df.iloc[2:, 1:7].values  # 取第2列到第7列的数据
-            self.update_raw_data_table(data)
+            df = pd.read_csv(path, header=None)
+            preview_data = df.iloc[2:, 1:7].values.tolist()
+            self.update_table(self.raw_table, preview_data)
         except Exception as e:
-            messagebox.showerror("错误", f"数据预览加载失败: {str(e)}")
-            logging.error(traceback.format_exc())
+            logging.error(f"数据预览加载失败: {str(e)}")
+            messagebox.showerror("错误", f"文件读取失败: {Path(path).name}")
 
     def process_data(self):
-        """执行数据处理流程"""
+        """处理流程"""
         try:
-            self.show_processing_window()
+            self.show_processing("正在计算传质系数...")
 
-            # 创建实验处理器实例
-            self.experiment = Oxygen_Desorption_Experiment_Processor(
+            # 初始化实验处理器
+            self.experiment_processor = Oxygen_Desorption_Experiment_Processor(
                 dry_packed_path=self.file_paths["dry_packed"],
                 wet_packed_path=self.file_paths["wet_packed"],
                 water_constant_path=self.file_paths["water_constant"],
                 air_constant_path=self.file_paths["air_constant"],
+                output_dir="./results",
             )
 
-            # 执行完整分析
-            self.experiment.run_full_analysis(compress_results=False)
+            # 执行完整计算流程
+            self.experiment_processor.run_all_calculations(compress_results=False)
 
-            # 更新结果表格
+            # 更新结果和图表
             self._update_results()
-
-            # 设置图像路径
-            self.images_paths = [
-                str(Path(self.experiment.output_dir) / "填料塔性能对比.png"),
-                str(Path(self.experiment.output_dir) / "氧解吸传质关联.png"),
-            ]
-
             self.plot_btn.config(state="normal")
-            self.close_processing_window()
-            messagebox.showinfo("成功", "数据处理完成！")
+            self.status_var.set("计算完成")
+
         except Exception as e:
-            self.close_processing_window()
-            messagebox.showerror("错误", f"数据处理失败: {str(e)}")
             logging.error(traceback.format_exc())
+            messagebox.showerror("计算错误", f"数据处理失败: {str(e)}")
+        finally:
+            self.close_processing()
 
     def _update_results(self):
         """更新结果表格"""
-        self.res_data_table.clear()
+        self.result_table.clear()
 
-        # 填料塔结果（通过Packed_Tower_Calculator获取）
-        tower_calculator = Packed_Tower_Calculator(self.experiment.data_loader)
-        tower_calculator.analyze_all_files()
-        for result in tower_calculator.results:
-            self.res_data_table.append([Path(result["csv_file"]).stem, "-", "-", f"拟合类型: {result['fit_type']}"])
+        # 填料塔结果
+        tower_data = self.experiment_processor.tower_calculator.results
+        for res in tower_data:
+            self.result_table.append(
+                [Path(res["csv_file"]).stem, "-", "-", f"拟合类型: {res['fit_type']}"]
+            )
 
-        # 氧解吸结果（通过Oxygen_Desorption_Calculator获取）
-        oxygen_calculator = Oxygen_Desorption_Calculator(self.experiment.data_loader)
-        oxygen_calculator.analyze_all_files()
-        for result in oxygen_calculator.results:
-            for i in range(len(result["L"])):
-                self.res_data_table.append(
+        # 氧解吸结果
+        oxygen_data = self.experiment_processor.oxygen_calculator.results
+        for res in oxygen_data:
+            for i in range(len(res["L"])):
+                self.result_table.append(
                     [
-                        f"{Path(result['csv_file']).stem}_{i+1}",
-                        f"{result['L'][i]:.4f}",
-                        f"{result['G'][i]:.4f}",
-                        f"{result['Kxa'][i]:.4f}",
+                        f"{Path(res['csv_file']).stem}_{i+1}",
+                        f"{res['L'][i]:.4f}",
+                        f"{res['G'][i]:.4f}",
+                        f"{res['Kxa'][i]:.4f}",
                     ]
                 )
 
     def plot_graph(self):
-        """生成并显示图表"""
-        if not self.images_paths:
-            messagebox.showwarning("警告", "没有可用的图表数据！")
+        """增强版绘图方法"""
+        if not self.experiment_processor:
+            messagebox.showwarning("警告", "请先处理数据")
             return
 
         try:
-            self.current_page = 0
-            self.show_page()
-            self._update_page_controls()
-            messagebox.showinfo("成功", "图表生成完成！")
+            # 动态获取最新图像路径
+            self.images_paths = [
+                str(Path(self.experiment_processor.output_dir) / "填料塔性能对比.png"),
+                str(Path(self.experiment_processor.output_dir) / "氧解吸传质关联.png"),
+            ]
+            self.plot_frame.set_images_paths(self.images_paths)
+            self.plot_frame.show_current_image()
+            self.status_var.set("就绪")
         except Exception as e:
-            messagebox.showerror("错误", f"图表显示失败: {str(e)}")
-            logging.error(traceback.format_exc())
+            logging.error(f"图表显示失败: {str(e)}")
+            messagebox.showerror("错误", "图表渲染失败，请检查图像文件")
 
-    def show_processing_window(self):
-        """显示处理中提示窗口"""
-        self.processing_window = Toplevel(self.window)
-        self.processing_window.title("处理中")
-        self.processing_window.geometry("300x100")
-        Label(self.processing_window, text="数据处理中，请稍候...").pack(expand=True)
-        self.processing_window.grab_set()
-        self.processing_window.update()
-
-    def close_processing_window(self):
-        """关闭处理提示窗口"""
-        if hasattr(self, "processing_window"):
-            self.processing_window.grab_release()
-            self.processing_window.destroy()
-
-    def update_raw_data_table(self, data):
-        """更新原始数据表格"""
-        self.raw_data_table.clear()
-        for idx, row in enumerate(data):
-            self.raw_data_table.append([idx + 1] + list(row[:6]))  # 只显示前6列数据
-
-    def on_resize(self, event):
-        """调整图像尺寸"""
-        if self.images_paths:
-            self.show_page()
-
-    def show_page(self):
-        """显示当前页图像"""
-        self.image_canvas.delete("all")
-        if self.current_page < len(self.images_paths):
-            try:
-                img = Image.open(self.images_paths[self.current_page])
-                canvas_width = self.image_canvas.winfo_width()
-                canvas_height = self.image_canvas.winfo_height()
-
-                # 保持宽高比缩放
-                img_ratio = img.width / img.height
-                canvas_ratio = canvas_width / canvas_height
-
-                if canvas_ratio > img_ratio:
-                    new_height = canvas_height
-                    new_width = int(new_height * img_ratio)
-                else:
-                    new_width = canvas_width
-                    new_height = int(new_width / img_ratio)
-
-                img = img.resize((new_width, new_height), Image.Resampling.LANCZOS)
-                img_tk = ImageTk.PhotoImage(img)
-
-                # 居中显示
-                x_pos = (canvas_width - new_width) // 2
-                y_pos = (canvas_height - new_height) // 2
-
-                self.image_canvas.create_image(x_pos, y_pos, anchor="nw", image=img_tk)
-                self.image_canvas.image = img_tk
-                self.page_label.config(text=f"Page {self.current_page + 1}/{len(self.images_paths)}")
-            except Exception as e:
-                logging.error(f"图像加载失败: {str(e)}")
-
-    def prev_page(self):
-        """显示上一页"""
-        if self.current_page > 0:
-            self.current_page -= 1
-            self.show_page()
-            self._update_page_controls()
-
-    def next_page(self):
-        """显示下一页"""
-        if self.current_page < len(self.images_paths) - 1:
-            self.current_page += 1
-            self.show_page()
-            self._update_page_controls()
-
-    def _update_page_controls(self):
-        """更新分页控制按钮状态"""
-        if len(self.images_paths) <= 1:
-            self.prev_btn.config(state="disabled")
-            self.next_btn.config(state="disabled")
+    def _on_parameter_change(self, event=None):
+        """参数变更响应"""
+        if self.param_entries.validate_all():
+            self.status_var.set("参数已更新，正在重新计算...")
+            self.process_data()
         else:
-            self.prev_btn.config(state="normal" if self.current_page > 0 else "disabled")
-            self.next_btn.config(state="normal" if self.current_page < len(self.images_paths) - 1 else "disabled")
+            self.status_var.set("参数验证失败")
 
-    def close_window(self):
-        """安全关闭窗口"""
-        self.window.destroy()
-
-
-if __name__ == "__main__":
-    root = tk.Tk()
-    root.title("氧解吸实验数据处理")
-    root.geometry("1200x800")
-    screen = Oxygen_Desorption_Screen(root)
-    screen.pack(expand=True, fill="both")
-    root.mainloop()
+    def _safe_close(self):
+        """关闭前资源释放"""
+        super()._safe_close()

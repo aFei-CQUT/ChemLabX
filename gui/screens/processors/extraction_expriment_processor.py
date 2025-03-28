@@ -6,13 +6,20 @@ import os
 
 # 动态获取路径
 current_script_path = os.path.abspath(__file__)
-project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(current_script_path))))
+project_root = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.dirname(current_script_path)))
+)
 sys.path.insert(0, project_root)
 
 import logging
 
 # 配置日志设置
-logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
+
+# 设置matplotlib日志级别为ERROR，避免显示findfont的DEBUG信息
+logging.getLogger("matplotlib.font_manager").setLevel(logging.ERROR)
 
 import argparse
 from gui.screens.calculators.extraction_calculator import Extraction_Calculator
@@ -20,26 +27,26 @@ from gui.screens.plotters.extraction_plotter import Extraction_Plotter
 
 
 class ExtractionExperimentProcessor:
-    def __init__(self, main_file=None, distribution_file=None):
+    def __init__(self, origin_file=None, distribution_file=None):
         """
         初始化实验处理器
-        :param main_file: 主数据文件路径
+        :param origin_file: 主数据文件路径
         :param distribution_file: 分配曲线数据文件路径
         """
-        self.main_file = main_file
+        self.origin_file = origin_file
         self.distribution_file = distribution_file
         self.calculator = None
         self.plotter = None
 
         # 结果输出配置
         self.output_dir = "./拟合图结果"
-        self.zip_file = "萃取分析结果.zip"
+        self.zip_file = "拟合图结果.zip"
 
     def validate_files(self):
         """验证输入文件有效性"""
         missing_files = []
-        if not os.path.exists(self.main_file):
-            missing_files.append(self.main_file)
+        if not os.path.exists(self.origin_file):
+            missing_files.append(self.origin_file)
         if not os.path.exists(self.distribution_file):
             missing_files.append(self.distribution_file)
 
@@ -48,7 +55,9 @@ class ExtractionExperimentProcessor:
 
     def setup_components(self):
         """初始化各处理组件"""
-        self.calculator = Extraction_Calculator(self.main_file, self.distribution_file)
+        self.calculator = Extraction_Calculator(
+            self.origin_file, self.distribution_file
+        )
         self.plotter = Extraction_Plotter(self.calculator)
         self.plotter.output_dir = self.output_dir
 
@@ -60,7 +69,7 @@ class ExtractionExperimentProcessor:
         # 可视化阶段
         self.plotter.create_output_dir()
         print("\n正在生成分析图表...")
-        self.plotter.plot_main_curves()
+        self.plotter.plot_origin_curves()
         self.plotter.plot_integration_curves()
 
         # 结果打包
@@ -95,15 +104,15 @@ def parse_arguments():
     """解析命令行参数"""
     parser = argparse.ArgumentParser(description="萃取实验数据处理系统")
     parser.add_argument(
-        "--main",
+        "--origin",
         type=str,
-        default="./1 原始数据记录.csv",
+        default="./csv_data/萃取/萃取原始数据记录表(非)/1_原始数据记录.csv",
         help="主数据文件路径",
     )
     parser.add_argument(
         "--distribution",
         type=str,
-        default="./3 分配曲线数据集.csv",
+        default="./csv_data/萃取/萃取原始数据记录表(非)/3_分配曲线数据集.csv",
         help="分配曲线数据文件路径",
     )
     return parser.parse_args()
@@ -114,5 +123,7 @@ if __name__ == "__main__":
     args = parse_arguments()
 
     # 创建处理器实例并运行
-    processor = ExtractionExperimentProcessor(main_file=args.main, distribution_file=args.distribution)
+    processor = ExtractionExperimentProcessor(
+        origin_file=args.origin, distribution_file=args.distribution
+    )
     processor.run()

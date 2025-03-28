@@ -6,7 +6,9 @@ import os
 
 # 动态获取路径
 current_script_path = os.path.abspath(__file__)
-project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(current_script_path))))
+project_root = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.dirname(current_script_path)))
+)
 sys.path.insert(0, project_root)
 
 import matplotlib.pyplot as plt
@@ -63,7 +65,11 @@ class Heat_Transfer_Plotter:
                 "grid.linestyle": "-",
                 "grid.linewidth": 1,
                 "mathtext.default": "regular",
-                "font.sans-serif": ["Microsoft YaHei", "SimHei", "DejaVu Sans"],  # 字体回退列表
+                "font.sans-serif": [
+                    "Microsoft YaHei",
+                    "SimHei",
+                    "DejaVu Sans",
+                ],  # 字体回退列表
                 "text.usetex": False,
                 "mathtext.fontset": "dejavusans",  # 使用与中文字体兼容的数学字体
             }
@@ -119,7 +125,9 @@ class Heat_Transfer_Plotter:
         )
 
         # 添加拟合方程文本
-        equation_text = f"拟合方程: y = {10**ans_params[0]:.10f} * x^{ans_params[1]:.2f}"
+        equation_text = (
+            f"拟合方程: y = {10**ans_params[0]:.10f} * x^{ans_params[1]:.2f}"
+        )
         plt.text(
             0.05,
             0.95,
@@ -142,7 +150,7 @@ class Heat_Transfer_Plotter:
         if len(self.results) > 0 and self.results[0]["params"] is not None:
             self.plot_fit(
                 self.results[0]["data_for_fit"],
-                "./传热拟合图结果/无强化套管拟合.png",
+                "./拟合图结果/无强化套管拟合.png",
                 "无强化套管传热性能分析",
             )
 
@@ -150,7 +158,7 @@ class Heat_Transfer_Plotter:
         if len(self.results) > 1 and self.results[1]["params"] is not None:
             self.plot_fit(
                 self.results[1]["data_for_fit"],
-                "./传热拟合图结果/有强化套管拟合.png",
+                "./拟合图结果/有强化套管拟合.png",
                 "有强化套管传热性能分析",
             )
 
@@ -206,9 +214,9 @@ class Heat_Transfer_Plotter:
             has_valid_data = True
 
         if has_valid_data:
-            self.create_directory("./传热拟合图结果/传热性能对比.png")
+            self.create_directory("./拟合图结果/传热性能对比.png")
             plt.legend(fontsize=12, loc="upper left")
-            plt.savefig("./传热拟合图结果/传热性能对比.png", bbox_inches="tight")
+            plt.savefig("./拟合图结果/传热性能对比.png", bbox_inches="tight")
             plt.close()
         else:
             print("警告：无有效数据生成对比图")
@@ -218,10 +226,10 @@ class Heat_Transfer_Plotter:
 if __name__ == "__main__":
     # 定义CSV文件路径列表
     csv_file_paths = [
-        "原始数据_无强化套管.csv",
-        "原始数据_有强化套管.csv",
-        "数据预处理_无强化套管.csv",
-        "数据预处理_有强化套管.csv",
+        "./csv_data/传热/传热原始数据记录表(非)/原始数据_无强化套管.csv",
+        "./csv_data/传热/传热原始数据记录表(非)/原始数据_有强化套管.csv",
+        "./csv_data/传热/传热原始数据记录表(非)/数据预处理_无强化套管.csv",
+        "./csv_data/传热/传热原始数据记录表(非)/数据预处理_有强化套管.csv",
     ]
 
     # 实例化传热计算器（需要确保Heat_Transfer_Calculator已修改为接受CSV文件）

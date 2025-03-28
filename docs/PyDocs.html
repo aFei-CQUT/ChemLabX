@@ -1,0 +1,842 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+
+<link href='https://fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic&subset=latin-ext' rel='stylesheet' type='text/css' /><link href='https://fonts.googleapis.com/css?family=Lato:900,300&subset=latin-ext' rel='stylesheet' type='text/css' /><style type='text/css'>html {overflow-x: initial !important;}:root { --bg-color: #ffffff; --text-color: #333333; --select-text-bg-color: #B5D6FC; --select-text-font-color: auto; --monospace: "Lucida Console",Consolas,"Courier",monospace; --title-bar-height: 20px; }
+.mac-os-11 { --title-bar-height: 28px; }
+html { font-size: 14px; background-color: var(--bg-color); color: var(--text-color); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+h1, h2, h3, h4, h5 { white-space: pre-wrap; }
+body { margin: 0px; padding: 0px; height: auto; inset: 0px; font-size: 1rem; line-height: 1.42857; overflow-x: hidden; background: inherit; }
+iframe { margin: auto; }
+a.url { word-break: break-all; }
+a:active, a:hover { outline: 0px; }
+.in-text-selection, ::selection { text-shadow: none; background: var(--select-text-bg-color); color: var(--select-text-font-color); }
+#write { margin: 0px auto; height: auto; width: inherit; word-break: normal; overflow-wrap: break-word; position: relative; white-space: normal; overflow-x: visible; padding-top: 36px; }
+#write.first-line-indent p { text-indent: 2em; }
+#write.first-line-indent li p, #write.first-line-indent p * { text-indent: 0px; }
+#write.first-line-indent li { margin-left: 2em; }
+.for-image #write { padding-left: 8px; padding-right: 8px; }
+body.typora-export { padding-left: 30px; padding-right: 30px; }
+.typora-export .footnote-line, .typora-export li, .typora-export p { white-space: pre-wrap; }
+.typora-export .task-list-item input { pointer-events: none; }
+@media screen and (max-width: 500px) {
+  body.typora-export { padding-left: 0px; padding-right: 0px; }
+  #write { padding-left: 20px; padding-right: 20px; }
+}
+#write li > figure:last-child { margin-bottom: 0.5rem; }
+#write ol, #write ul { position: relative; }
+img { max-width: 100%; vertical-align: middle; image-orientation: from-image; }
+button, input, select, textarea { color: inherit; font: inherit; }
+input[type="checkbox"], input[type="radio"] { line-height: normal; padding: 0px; }
+*, ::after, ::before { box-sizing: border-box; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p, #write pre { width: inherit; position: relative; }
+#write svg h1, #write svg h2, #write svg h3, #write svg h4, #write svg h5, #write svg h6, #write svg p { position: static; }
+p { line-height: inherit; }
+h1, h2, h3, h4, h5, h6 { break-after: avoid-page; break-inside: avoid; orphans: 4; }
+p { orphans: 4; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.6rem; }
+h4 { font-size: 1.4rem; }
+h5 { font-size: 1.2rem; }
+h6 { font-size: 1rem; }
+.md-math-block, .md-rawblock, h1, h2, h3, h4, h5, h6, p { margin-top: 1rem; margin-bottom: 1rem; }
+.hidden { display: none; }
+.md-blockmeta { color: rgb(204, 204, 204); font-weight: 700; font-style: italic; }
+a { cursor: pointer; }
+sup.md-footnote { padding: 2px 4px; background-color: rgba(238, 238, 238, 0.7); color: rgb(85, 85, 85); border-radius: 4px; cursor: pointer; }
+sup.md-footnote a, sup.md-footnote a:hover { color: inherit; text-transform: inherit; text-decoration: inherit; }
+#write input[type="checkbox"] { cursor: pointer; width: inherit; height: inherit; }
+figure { overflow-x: auto; margin: 1.2em 0px; max-width: calc(100% + 16px); padding: 0px; }
+figure > table { margin: 0px; }
+thead, tr { break-inside: avoid; break-after: auto; }
+thead { display: table-header-group; }
+table { border-collapse: collapse; border-spacing: 0px; width: 100%; overflow: auto; break-inside: auto; text-align: left; }
+table.md-table td { min-width: 32px; }
+.CodeMirror-gutters { border-right: 0px; background-color: inherit; }
+.CodeMirror-linenumber { user-select: none; }
+.CodeMirror { text-align: left; }
+.CodeMirror-placeholder { opacity: 0.3; }
+.CodeMirror pre { padding: 0px 4px; }
+.CodeMirror-lines { padding: 0px; }
+div.hr:focus { cursor: none; }
+#write pre { white-space: pre-wrap; }
+#write.fences-no-line-wrapping pre { white-space: pre; }
+#write pre.ty-contain-cm { white-space: normal; }
+.CodeMirror-gutters { margin-right: 4px; }
+.md-fences { font-size: 0.9rem; display: block; break-inside: avoid; text-align: left; overflow: visible; white-space: pre; background: inherit; position: relative !important; }
+.md-fences-adv-panel { width: 100%; margin-top: 10px; text-align: center; padding-top: 0px; padding-bottom: 8px; overflow-x: auto; }
+#write .md-fences.mock-cm { white-space: pre-wrap; }
+.md-fences.md-fences-with-lineno { padding-left: 0px; }
+#write.fences-no-line-wrapping .md-fences.mock-cm { white-space: pre; overflow-x: auto; }
+.md-fences.mock-cm.md-fences-with-lineno { padding-left: 8px; }
+.CodeMirror-line, twitterwidget { break-inside: avoid; }
+svg { break-inside: avoid; }
+.footnotes { opacity: 0.8; font-size: 0.9rem; margin-top: 1em; margin-bottom: 1em; }
+.footnotes + .footnotes { margin-top: 0px; }
+.md-reset { margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: top; background: 0px 0px; text-decoration: none; text-shadow: none; float: none; position: static; width: auto; height: auto; white-space: nowrap; cursor: inherit; -webkit-tap-highlight-color: transparent; line-height: normal; font-weight: 400; text-align: left; box-sizing: content-box; direction: ltr; }
+li div { padding-top: 0px; }
+blockquote { margin: 1rem 0px; }
+li .mathjax-block, li p { margin: 0.5rem 0px; }
+li blockquote { margin: 1rem 0px; }
+li { margin: 0px; position: relative; }
+blockquote > :last-child { margin-bottom: 0px; }
+blockquote > :first-child, li > :first-child { margin-top: 0px; }
+.footnotes-area { color: rgb(136, 136, 136); margin-top: 0.714rem; padding-bottom: 0.143rem; white-space: normal; }
+#write .footnote-line { white-space: pre-wrap; }
+@media print {
+  body, html { border: 1px solid transparent; height: 99%; break-after: avoid; break-before: avoid; font-variant-ligatures: no-common-ligatures; }
+  #write { margin-top: 0px; border-color: transparent !important; padding-top: 0px !important; padding-bottom: 0px !important; }
+  .typora-export * { -webkit-print-color-adjust: exact; }
+  .typora-export #write { break-after: avoid; }
+  .typora-export #write::after { height: 0px; }
+  .is-mac table { break-inside: avoid; }
+  #write > p:nth-child(1) { margin-top: 0px; }
+  .typora-export-show-outline .typora-export-sidebar { display: none; }
+  figure { overflow-x: visible; }
+}
+.footnote-line { margin-top: 0.714em; font-size: 0.7em; }
+a img, img a { cursor: pointer; }
+pre.md-meta-block { font-size: 0.8rem; min-height: 0.8rem; white-space: pre-wrap; background: rgb(204, 204, 204); display: block; overflow-x: hidden; }
+p > .md-image:only-child:not(.md-img-error) img, p > img:only-child { display: block; margin: auto; }
+#write.first-line-indent p > .md-image:only-child:not(.md-img-error) img { left: -2em; position: relative; }
+p > .md-image:only-child { display: inline-block; width: 100%; }
+#write .MathJax_Display { margin: 0.8em 0px 0px; }
+.md-math-block { width: 100%; }
+.md-math-block:not(:empty)::after { display: none; }
+.MathJax_ref { fill: currentcolor; }
+[contenteditable="true"]:active, [contenteditable="true"]:focus, [contenteditable="false"]:active, [contenteditable="false"]:focus { outline: 0px; box-shadow: none; }
+.md-task-list-item { position: relative; list-style-type: none; }
+.task-list-item.md-task-list-item { padding-left: 0px; }
+.md-task-list-item > input { position: absolute; top: 0px; left: 0px; margin-left: -1.2em; margin-top: calc(1em - 10px); border: none; }
+.math { font-size: 1rem; }
+.md-toc { min-height: 3.58rem; position: relative; font-size: 0.9rem; border-radius: 10px; }
+.md-toc-content { position: relative; margin-left: 0px; }
+.md-toc-content::after, .md-toc::after { display: none; }
+.md-toc-item { display: block; color: rgb(65, 131, 196); }
+.md-toc-item a { text-decoration: none; }
+.md-toc-inner:hover { text-decoration: underline; }
+.md-toc-inner { display: inline-block; cursor: pointer; }
+.md-toc-h1 .md-toc-inner { margin-left: 0px; font-weight: 700; }
+.md-toc-h2 .md-toc-inner { margin-left: 2em; }
+.md-toc-h3 .md-toc-inner { margin-left: 4em; }
+.md-toc-h4 .md-toc-inner { margin-left: 6em; }
+.md-toc-h5 .md-toc-inner { margin-left: 8em; }
+.md-toc-h6 .md-toc-inner { margin-left: 10em; }
+@media screen and (max-width: 48em) {
+  .md-toc-h3 .md-toc-inner { margin-left: 3.5em; }
+  .md-toc-h4 .md-toc-inner { margin-left: 5em; }
+  .md-toc-h5 .md-toc-inner { margin-left: 6.5em; }
+  .md-toc-h6 .md-toc-inner { margin-left: 8em; }
+}
+a.md-toc-inner { font-size: inherit; font-style: inherit; font-weight: inherit; line-height: inherit; }
+.footnote-line a:not(.reversefootnote) { color: inherit; }
+.reversefootnote { font-family: ui-monospace, sans-serif; }
+.md-attr { display: none; }
+.md-fn-count::after { content: "."; }
+code, pre, samp, tt { font-family: var(--monospace); }
+kbd { margin: 0px 0.1em; padding: 0.1em 0.6em; font-size: 0.8em; color: rgb(36, 39, 41); background: rgb(255, 255, 255); border: 1px solid rgb(173, 179, 185); border-radius: 3px; box-shadow: rgba(12, 13, 14, 0.2) 0px 1px 0px, rgb(255, 255, 255) 0px 0px 0px 2px inset; white-space: nowrap; vertical-align: middle; }
+.md-comment { color: rgb(162, 127, 3); opacity: 0.6; font-family: var(--monospace); }
+code { text-align: left; vertical-align: initial; }
+a.md-print-anchor { white-space: pre !important; border-width: initial !important; border-style: none !important; border-color: initial !important; display: inline-block !important; position: absolute !important; width: 1px !important; right: 0px !important; outline: 0px !important; background: 0px 0px !important; text-decoration: initial !important; text-shadow: initial !important; }
+.os-windows.monocolor-emoji .md-emoji { font-family: "Segoe UI Symbol", sans-serif; }
+.md-diagram-panel > svg { max-width: 100%; }
+[lang="flow"] svg, [lang="mermaid"] svg { max-width: 100%; height: auto; }
+[lang="mermaid"] .node text { font-size: 1rem; }
+table tr th { border-bottom: 0px; }
+video { max-width: 100%; display: block; margin: 0px auto; }
+iframe { max-width: 100%; width: 100%; border: none; }
+.highlight td, .highlight tr { border: 0px; }
+mark { background: rgb(255, 255, 0); color: rgb(0, 0, 0); }
+.md-html-inline .md-plain, .md-html-inline strong, mark .md-inline-math, mark strong { color: inherit; }
+.md-expand mark .md-meta { opacity: 0.3 !important; }
+mark .md-meta { color: rgb(0, 0, 0); }
+@media print {
+  .typora-export h1, .typora-export h2, .typora-export h3, .typora-export h4, .typora-export h5, .typora-export h6 { break-inside: avoid; }
+}
+.md-diagram-panel .messageText { stroke: none !important; }
+.md-diagram-panel .start-state { fill: var(--node-fill); }
+.md-diagram-panel .edgeLabel rect { opacity: 1 !important; }
+.md-fences.md-fences-math { font-size: 1em; }
+.md-fences-advanced:not(.md-focus) { padding: 0px; white-space: nowrap; border: 0px; }
+.md-fences-advanced:not(.md-focus) { background: inherit; }
+.mermaid-svg { margin: auto; }
+.typora-export-show-outline .typora-export-content { max-width: 1440px; margin: auto; display: flex; flex-direction: row; }
+.typora-export-sidebar { width: 300px; font-size: 0.8rem; margin-top: 80px; margin-right: 18px; }
+.typora-export-show-outline #write { --webkit-flex: 2; flex: 2 1 0%; }
+.typora-export-sidebar .outline-content { position: fixed; top: 0px; max-height: 100%; overflow: hidden auto; padding-bottom: 30px; padding-top: 60px; width: 300px; }
+@media screen and (max-width: 1024px) {
+  .typora-export-sidebar, .typora-export-sidebar .outline-content { width: 240px; }
+}
+@media screen and (max-width: 800px) {
+  .typora-export-sidebar { display: none; }
+}
+.outline-content li, .outline-content ul { margin-left: 0px; margin-right: 0px; padding-left: 0px; padding-right: 0px; list-style: none; overflow-wrap: anywhere; }
+.outline-content ul { margin-top: 0px; margin-bottom: 0px; }
+.outline-content strong { font-weight: 400; }
+.outline-expander { width: 1rem; height: 1.42857rem; position: relative; display: table-cell; vertical-align: middle; cursor: pointer; padding-left: 4px; }
+.outline-expander::before { content: ""; position: relative; font-family: Ionicons; display: inline-block; font-size: 8px; vertical-align: middle; }
+.outline-item { padding-top: 3px; padding-bottom: 3px; cursor: pointer; }
+.outline-expander:hover::before { content: ""; }
+.outline-h1 > .outline-item { padding-left: 0px; }
+.outline-h2 > .outline-item { padding-left: 1em; }
+.outline-h3 > .outline-item { padding-left: 2em; }
+.outline-h4 > .outline-item { padding-left: 3em; }
+.outline-h5 > .outline-item { padding-left: 4em; }
+.outline-h6 > .outline-item { padding-left: 5em; }
+.outline-label { cursor: pointer; display: table-cell; vertical-align: middle; text-decoration: none; color: inherit; }
+.outline-label:hover { text-decoration: underline; }
+.outline-item:hover { border-color: rgb(245, 245, 245); background-color: var(--item-hover-bg-color); }
+.outline-item:hover { margin-left: -28px; margin-right: -28px; border-left: 28px solid transparent; border-right: 28px solid transparent; }
+.outline-item-single .outline-expander::before, .outline-item-single .outline-expander:hover::before { display: none; }
+.outline-item-open > .outline-item > .outline-expander::before { content: ""; }
+.outline-children { display: none; }
+.info-panel-tab-wrapper { display: none; }
+.outline-item-open > .outline-children { display: block; }
+.typora-export .outline-item { padding-top: 1px; padding-bottom: 1px; }
+.typora-export .outline-item:hover { margin-right: -8px; border-right: 8px solid transparent; }
+.typora-export .outline-expander::before { content: "+"; font-family: inherit; top: -1px; }
+.typora-export .outline-expander:hover::before, .typora-export .outline-item-open > .outline-item > .outline-expander::before { content: "−"; }
+.typora-export-collapse-outline .outline-children { display: none; }
+.typora-export-collapse-outline .outline-item-open > .outline-children, .typora-export-no-collapse-outline .outline-children { display: block; }
+.typora-export-no-collapse-outline .outline-expander::before { content: "" !important; }
+.typora-export-show-outline .outline-item-active > .outline-item .outline-label { font-weight: 700; }
+.md-inline-math-container mjx-container { zoom: 0.95; }
+mjx-container { break-inside: avoid; }
+.md-alert.md-alert-note { border-left-color: rgb(9, 105, 218); }
+.md-alert.md-alert-important { border-left-color: rgb(130, 80, 223); }
+.md-alert.md-alert-warning { border-left-color: rgb(154, 103, 0); }
+.md-alert.md-alert-tip { border-left-color: rgb(31, 136, 61); }
+.md-alert.md-alert-caution { border-left-color: rgb(207, 34, 46); }
+.md-alert { padding: 0px 1em; margin-bottom: 16px; color: inherit; border-left: 0.25em solid rgb(0, 0, 0); }
+.md-alert-text-note { color: rgb(9, 105, 218); }
+.md-alert-text-important { color: rgb(130, 80, 223); }
+.md-alert-text-warning { color: rgb(154, 103, 0); }
+.md-alert-text-tip { color: rgb(31, 136, 61); }
+.md-alert-text-caution { color: rgb(207, 34, 46); }
+.md-alert-text { font-size: 0.9rem; font-weight: 700; }
+.md-alert-text svg { fill: currentcolor; position: relative; top: 0.125em; margin-right: 1ch; overflow: visible; }
+.md-alert-text-container::after { content: attr(data-text); text-transform: capitalize; pointer-events: none; margin-right: 1ch; }
+
+
+.CodeMirror { height: auto; }
+.CodeMirror.cm-s-inner { background: inherit; }
+.CodeMirror-scroll { overflow: auto hidden; z-index: 3; }
+.CodeMirror-gutter-filler, .CodeMirror-scrollbar-filler { background-color: rgb(255, 255, 255); }
+.CodeMirror-gutters { border-right: 1px solid rgb(221, 221, 221); background: inherit; white-space: nowrap; }
+.CodeMirror-linenumber { padding: 0px 3px 0px 5px; text-align: right; color: rgb(153, 153, 153); }
+.cm-s-inner .cm-keyword { color: rgb(119, 0, 136); }
+.cm-s-inner .cm-atom, .cm-s-inner.cm-atom { color: rgb(34, 17, 153); }
+.cm-s-inner .cm-number { color: rgb(17, 102, 68); }
+.cm-s-inner .cm-def { color: rgb(0, 0, 255); }
+.cm-s-inner .cm-variable { color: rgb(0, 0, 0); }
+.cm-s-inner .cm-variable-2 { color: rgb(0, 85, 170); }
+.cm-s-inner .cm-variable-3 { color: rgb(0, 136, 85); }
+.cm-s-inner .cm-string { color: rgb(170, 17, 17); }
+.cm-s-inner .cm-property { color: rgb(0, 0, 0); }
+.cm-s-inner .cm-operator { color: rgb(152, 26, 26); }
+.cm-s-inner .cm-comment, .cm-s-inner.cm-comment { color: rgb(170, 85, 0); }
+.cm-s-inner .cm-string-2 { color: rgb(255, 85, 0); }
+.cm-s-inner .cm-meta { color: rgb(85, 85, 85); }
+.cm-s-inner .cm-qualifier { color: rgb(85, 85, 85); }
+.cm-s-inner .cm-builtin { color: rgb(51, 0, 170); }
+.cm-s-inner .cm-bracket { color: rgb(153, 153, 119); }
+.cm-s-inner .cm-tag { color: rgb(17, 119, 0); }
+.cm-s-inner .cm-attribute { color: rgb(0, 0, 204); }
+.cm-s-inner .cm-header, .cm-s-inner.cm-header { color: rgb(0, 0, 255); }
+.cm-s-inner .cm-quote, .cm-s-inner.cm-quote { color: rgb(0, 153, 0); }
+.cm-s-inner .cm-hr, .cm-s-inner.cm-hr { color: rgb(153, 153, 153); }
+.cm-s-inner .cm-link, .cm-s-inner.cm-link { color: rgb(0, 0, 204); }
+.cm-negative { color: rgb(221, 68, 68); }
+.cm-positive { color: rgb(34, 153, 34); }
+.cm-header, .cm-strong { font-weight: 700; }
+.cm-del { text-decoration: line-through; }
+.cm-em { font-style: italic; }
+.cm-link { text-decoration: underline; }
+.cm-error { color: red; }
+.cm-invalidchar { color: red; }
+.cm-constant { color: rgb(38, 139, 210); }
+.cm-defined { color: rgb(181, 137, 0); }
+div.CodeMirror span.CodeMirror-matchingbracket { color: rgb(0, 255, 0); }
+div.CodeMirror span.CodeMirror-nonmatchingbracket { color: rgb(255, 34, 34); }
+.cm-s-inner .CodeMirror-activeline-background { background: inherit; }
+.CodeMirror { position: relative; overflow: hidden; }
+.CodeMirror-scroll { height: 100%; outline: 0px; position: relative; box-sizing: content-box; background: inherit; }
+.CodeMirror-sizer { position: relative; }
+.CodeMirror-gutter-filler, .CodeMirror-hscrollbar, .CodeMirror-scrollbar-filler, .CodeMirror-vscrollbar { position: absolute; z-index: 6; display: none; outline: 0px; }
+.CodeMirror-vscrollbar { right: 0px; top: 0px; overflow: hidden; }
+.CodeMirror-hscrollbar { bottom: 0px; left: 0px; overflow: auto hidden; }
+.CodeMirror-scrollbar-filler { right: 0px; bottom: 0px; }
+.CodeMirror-gutter-filler { left: 0px; bottom: 0px; }
+.CodeMirror-gutters { position: absolute; left: 0px; top: 0px; padding-bottom: 10px; z-index: 3; overflow-y: hidden; }
+.CodeMirror-gutter { white-space: normal; height: 100%; box-sizing: content-box; padding-bottom: 30px; margin-bottom: -32px; display: inline-block; }
+.CodeMirror-gutter-wrapper { position: absolute; z-index: 4; background: 0px 0px !important; border: none !important; }
+.CodeMirror-gutter-background { position: absolute; top: 0px; bottom: 0px; z-index: 4; }
+.CodeMirror-gutter-elt { position: absolute; cursor: default; z-index: 4; }
+.CodeMirror-lines { cursor: text; }
+.CodeMirror pre { border-radius: 0px; border-width: 0px; background: 0px 0px; font-family: inherit; font-size: inherit; margin: 0px; white-space: pre; overflow-wrap: normal; color: inherit; z-index: 2; position: relative; overflow: visible; }
+.CodeMirror-wrap pre { overflow-wrap: break-word; white-space: pre-wrap; word-break: normal; }
+.CodeMirror-code pre { border-right: 30px solid transparent; width: fit-content; }
+.CodeMirror-wrap .CodeMirror-code pre { border-right: none; width: auto; }
+.CodeMirror-linebackground { position: absolute; inset: 0px; z-index: 0; }
+.CodeMirror-linewidget { position: relative; z-index: 2; overflow: auto; }
+.CodeMirror-wrap .CodeMirror-scroll { overflow-x: hidden; }
+.CodeMirror-measure { position: absolute; width: 100%; height: 0px; overflow: hidden; visibility: hidden; }
+.CodeMirror-measure pre { position: static; }
+.CodeMirror div.CodeMirror-cursor { position: absolute; visibility: hidden; border-right: none; width: 0px; }
+.CodeMirror div.CodeMirror-cursor { visibility: hidden; }
+.CodeMirror-focused div.CodeMirror-cursor { visibility: inherit; }
+.cm-searching { background: rgba(255, 255, 0, 0.4); }
+span.cm-underlined { text-decoration: underline; }
+span.cm-strikethrough { text-decoration: line-through; }
+.cm-tw-syntaxerror { color: rgb(255, 255, 255); background-color: rgb(153, 0, 0); }
+.cm-tw-deleted { text-decoration: line-through; }
+.cm-tw-header5 { font-weight: 700; }
+.cm-tw-listitem:first-child { padding-left: 10px; }
+.cm-tw-box { border-style: solid; border-right-width: 1px; border-bottom-width: 1px; border-left-width: 1px; border-color: inherit; border-top-width: 0px !important; }
+.cm-tw-underline { text-decoration: underline; }
+@media print {
+  .CodeMirror div.CodeMirror-cursor { visibility: hidden; }
+}
+
+
+@include-when-export url(https://fonts.googleapis.com/css?family=Merriweather:900,900italic,300,300italic&subset=latin-ext);
+@include-when-export url(https://fonts.googleapis.com/css?family=Lato:900,300&subset=latin-ext);
+
+:root {
+	--control-text-color: #777;
+}
+
+/**
+ * forked from pixyll.com
+ * MIT license
+ */
+
+h1,
+.h1,
+.f1 {
+	font-size: 2rem;
+	line-height: 2.5rem;
+}
+h2,
+.h2,
+.f2 {
+	font-size: 1.5rem;
+	line-height: 2rem;
+}
+h3,
+.h3,
+.f3 {
+	font-size: 1.25rem;
+	line-height: 1.5rem;
+}
+p,
+.p,
+.f4,
+h4,
+h5,
+h6,
+dl,
+ol,
+ul,
+pre[cid],
+div[cid],
+#typora-source {
+	font-size: 1.125rem;
+	line-height: 1.5rem;
+}
+
+h4 {
+	font-size: 1.13rem;
+}
+/*
+ Pixyll
+ A simple, beautiful theme for Jekyll that emphasizes content rather than aesthetic fluff.
+ Best served with BASSCSS (http://jxnblk.github.io/basscss)
+ Crafted with <3 by John Otander (@4lpine) - ©2015 John Otander MIT License http://opensource.org/licenses/MIT
+
+*/
+
+body {
+	font-family: "Merriweather", "PT Serif", Georgia, "Times New Roman", "STSong", 'Segoe UI Emoji', Serif;
+	line-height: 1.5rem;
+	font-weight: 400;
+}
+
+#write {
+	max-width: 914px;
+	color: #333;
+}
+
+@media only screen and (min-width: 1400px) {
+	#write {
+		max-width: 1100px;
+	}
+}
+
+@media only screen and (min-width: 1700px) {
+	#write {
+		max-width: 1200px;
+	}
+}
+
+img {
+	width: auto;
+	max-width: 100%;
+}
+body {
+	font-size: 1.5rem;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+
+.ty-table-edit {
+	background: #ededed;
+}
+
+table {
+	width: 100%;
+	font-size: 1.125rem;
+}
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td,
+table > tfoot > tr > th,
+table > tfoot > tr > td {
+	padding: 12px;
+	line-height: 1.2;
+	vertical-align: top;
+	border-top: 1px solid #333;
+}
+table > thead > tr > th {
+	vertical-align: bottom;
+	border-bottom: 2px solid #333;
+}
+table > caption + thead > tr:first-child > th,
+table > caption + thead > tr:first-child > td,
+table > colgroup + thead > tr:first-child > th,
+table > colgroup + thead > tr:first-child > td,
+table > thead:first-child > tr:first-child > th,
+table > thead:first-child > tr:first-child > td {
+	border-top: 0;
+}
+table > tbody + tbody {
+	border-top: 2px solid #333;
+}
+p {
+	font-weight: 300;
+	line-height: 1.5;
+}
+abbr {
+	border-bottom: 1px black dotted;
+	cursor: help;
+}
+pre,
+code {
+	font-family: Menlo, Monaco, "Courier New", monospace;
+}
+
+code,
+.md-fences  {
+	color: #7a7a7a;
+}
+
+.md-fences {
+	padding: 1.125em;
+	margin-bottom: 0.88em;
+	font-size: 1rem;
+	border: 1px solid #7a7a7a;
+	padding-bottom: 0.5rem;
+	padding-top: 0.5rem;
+}
+
+blockquote {
+	padding: 1.33em;
+	font-style: italic;
+	border-left: 5px solid #7a7a7a;
+	color: #555;
+}
+blockquote em {
+	color: #000;
+}
+blockquote footer {
+	font-size: .85rem;
+	font-style: normal;
+	background-color: #fff;
+	color: #7a7a7a;
+	border-color: transparent;
+}
+h1,
+.h1,
+h2,
+.h2,
+h3,
+.h3,
+h4,
+.h4,
+h5,
+.h5,
+h6,
+.h6 {
+	font-family: "Lato", 'Helvetica Neue', Helvetica, sans-serif;
+	font-weight: bold;
+	line-height: 1.2;
+	margin: 1em 0 0.5em;
+}
+@media screen and (min-width: 48em) {
+	.h1,
+	h1 {
+		font-size: 3.250rem;
+	}
+	.h2,
+	h2 {
+		font-size: 2.298rem;
+	}
+	.h3,
+	h3 {
+		font-size: 1.625rem;
+	}
+	.h4,
+	h4 {
+		font-size: 1.3rem;
+	}
+	#write>h4.md-focus:before,
+	#write>h5.md-focus:before,
+	#write>h6.md-focus:before{
+		top: 1px;
+	}
+	.p,
+	p,
+	li {
+		font-size: 1.25rem;
+		line-height: 1.8;
+	}
+	table {
+		font-size: 1.25rem;
+	}
+}
+@media (max-width: 48em) {
+	blockquote {
+		margin-left: 1rem;
+		margin-right: 0;
+		padding: 0.5em;
+	}
+	.h1,
+	h1 {
+		font-size: 2.827rem;
+	}
+	.h2,
+	h2 {
+		font-size: 1.999rem;
+	}
+	.h3,
+	h3 {
+		font-size: 1.413rem;
+	}
+	.h4,
+	h4 {
+		font-size: 1.3rem;
+	}
+}
+@media screen and (min-width: 64em) {
+	.h1,
+	h1 {
+		font-size: 4.498rem;
+	}
+	.h2,
+	h2 {
+		font-size: 2.29rem;
+	}
+	.h3,
+	h3 {
+		font-size: 1.9rem;
+	}
+	.h4,
+	h4 {
+		font-size: 1.591rem;
+	}
+	#write>h4.md-focus:before{
+		top:4px;
+	}
+}
+a {
+	color: #463F5C;
+	text-decoration: underline;
+}
+
+#write {
+	padding-top: 2rem;
+}
+
+#write pre.md-meta-block {
+	min-height: 35px;
+	padding: 0.5em 1em;
+	white-space: pre;
+	border: 0px;
+
+	border-left: 30px #f8f8f8 solid;
+	border-right: 30px #f8f8f8 solid;
+	width: 100vw;
+	max-width: calc(100% + 60px);
+
+	margin-left: -30px;
+	margin-bottom: 2em;
+	margin-top: -2010px;
+	padding-top: 2000px;
+	padding-bottom: 10px;
+	line-height: 1.5em;
+	color: #7a7a7a;
+	background-color: #fafafa;
+	font-family: 'Lato', 'Helvetica Neue', Helvetica, sans-serif;
+	font-weight: 300;
+	clear: both;
+	padding-left: 0;
+	font-size:1.125rem;
+}
+.md-image>.md-meta {
+	color: #463F5C
+}
+.footnotes {
+	font-size:1.1rem;
+}
+.md-tag {
+	font-family: 'Lato', 'Helvetica Neue', Helvetica, sans-serif;
+}
+.code-tooltip {
+	background: white;
+}
+.code-tooltip-content {
+	font-size: 1.1rem;
+}
+
+.task-list{
+	padding-left: 0;
+}
+
+.md-task-list-item {
+	padding-left:34px;
+}
+
+.md-task-list-item > input{
+	width: 1.25rem;
+	height: 1.25rem;
+	display: block;
+	-webkit-appearance: initial;
+	top: -0.2rem;
+	margin-left: -1.6em;
+	margin-top: calc(1rem - 7px);
+	border: none;
+}
+
+.md-task-list-item > input:focus{
+	outline: none;
+	box-shadow: none;
+}
+
+.md-task-list-item > input:before{
+	border: 1px solid #555;
+	border-radius: 1.5rem;
+	width: 1.5rem;
+	height: 1.5rem;
+	background: #fff;
+	content: ' ';
+	transition: background-color 200ms ease-in-out;
+	display: block;
+}
+
+.md-task-list-item > input:checked:before,
+.md-task-list-item > input[checked]:before{
+	background: #333;
+	border-width: 2px;
+	display:inline-block;
+	transition: background-color 200ms ease-in-out;
+}
+
+.md-task-list-item > input:checked:after,
+.md-task-list-item > input[checked]:after {
+	opacity: 1;
+}
+
+.md-task-list-item > input:after {
+	opacity: 1;
+	-webkit-transition: opacity 0.05s ease-in-out;
+	-moz-transition: opacity 0.05s ease-in-out;
+	transition: opacity 0.05s ease-in-out;
+	-webkit-transform: rotate(-45deg);
+	-moz-transform: rotate(-45deg);
+	transform: rotate(-45deg);
+	position: absolute;
+	top: 0.4375rem;
+	left: 0.28125rem;
+	width: 0.9375rem;
+	height: 0.5rem;
+	border: 3px solid #fff;
+	border-top: 0;
+	border-right: 0;
+	content: ' ';
+	opacity: 0;
+}
+
+.md-tag {
+	color:inherit;
+}
+
+.md-toc:focus .md-toc-content{
+	margin-top: 19px;
+}
+
+#typora-sidebar {
+	font-size:1rem !important;
+}
+
+.html-for-mac #typora-sidebar {
+	background-color:white;
+}
+
+.outline-content li, .outline-content ul {
+	font-size:1rem !important;
+}
+
+.outline-title {
+	line-height: inherit;
+	margin-top: 10px;
+}
+
+.outline-expander {
+	width: 18px;
+}
+
+.outline-expander:before {
+ 	content: "+";
+	font-family: inherit;
+	color: rgb(108, 108, 108); 
+  font-size: 1.5rem;
+ 	top: -0.1rem;
+}
+
+.outline-expander:hover:before {
+	content: "+";
+}
+
+.outline-item-open>.outline-item>.outline-expander:before{
+	content: "-";
+}
+
+/** source code mode */
+#typora-source {
+	font-family: Courier, monospace;
+    color: #6A6A6A;
+}
+
+.os-windows #typora-source {
+	font-family: inherit;
+}
+
+.cm-s-typora-default .cm-header, 
+.cm-s-typora-default .cm-property,
+.CodeMirror.cm-s-typora-default div.CodeMirror-cursor {
+	color: #428bca;
+}
+
+.cm-s-typora-default .cm-atom, .cm-s-typora-default .cm-number {
+	color: #777777;
+}
+
+.md-diagram-panel {
+	margin-top: 24px;
+	margin-left: -1.2em;
+}
+
+.md-mathjax-midline {
+	background: #fafafa;
+}
+
+.enable-diagrams pre.md-fences[lang="sequence"] .code-tooltip,
+.enable-diagrams pre.md-fences[lang="flow"] .code-tooltip,
+.enable-diagrams pre.md-fences[lang="mermaid"] .code-tooltip {
+    bottom: -3.4em;
+}
+
+.dropdown-menu .divider {
+	border-color: #e5e5e5;
+}
+
+li {
+	margin: 0.5rem 0;
+}
+
+li > *:last-child {
+	margin-bottom: 0;
+}
+
+
+</style><title>PyDocs</title>
+</head>
+<body class='typora-export os-windows'><div class='typora-export-content'>
+<div id='write'  class=''><h1 id='1-项目概述'><span>1. 项目概述</span></h1><p><span>本项目为实验数据采集与处理软件，旨在为化学实验过程中的数据分析提供便捷的工具。通过图形化界面，用户可以导入实验数据、进行数据处理与清洗、检测异常值、执行拟合分析，并生成各类图表。软件支持多种实验类型，包括但不限于精馏实验、干燥实验、流体实验等。最终，所有处理结果都可以导出为图表文件和报告，便于实验人员进一步分析与分享。</span></p><p><span>该项目采用Python编写，结合Tkinter构建图形化用户界面，使用Matplotlib、NumPy等库进行数据处理与可视化。</span></p><p><span>文件结构如下</span></p><pre class="md-fences md-end-block md-fences-with-lineno ty-contain-cm modeLoaded" spellcheck="false" lang="" style="break-inside: unset;"><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang=""><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 8.5px; left: 41.985px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 38px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: -37.995px; width: 38px;"></div><div class="CodeMirror-gutter-wrapper CodeMirror-activeline-gutter" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt CodeMirror-linenumber-show" style="left: 0px; width: 29px;">1</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">|-- 文件: .gitattributes</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">2</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">|-- 文件: .gitignore</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">3</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">|-- 文件夹: gui</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">4</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">| &nbsp; |-- 文件: app.py &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  # 主应用程序文件，负责界面的初始化和管理</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">5</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">| &nbsp; |-- 文件夹: screens &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; # 存放不同实验屏幕模块</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">6</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">| &nbsp; | &nbsp; |-- 文件夹: calculators &nbsp; &nbsp; # 存放计算器模块，每个实验对应一个计算器</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">7</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">| &nbsp; | &nbsp; |-- 文件夹: common_screens  # 存放通用的屏幕类，如基本界面布局</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">8</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">| &nbsp; | &nbsp; |-- 文件夹: common_widgets  # 存放通用的界面组件，如表格、按钮等</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">9</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">| &nbsp; | &nbsp; |-- 文件: distillation_screen.py # 精馏实验界面</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt CodeMirror-linenumber-show" style="left: 0px; width: 29px;">10</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">| &nbsp; | &nbsp; |-- 文件: drying_screen.py  # 干燥实验界面</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">11</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">| &nbsp; | &nbsp; |-- 文件: extraction_screen.py # 萃取实验界面</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">12</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">| &nbsp; | &nbsp; |-- 文件: filteration_screen.py # 过滤实验界面</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">13</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">| &nbsp; | &nbsp; |-- 文件: fluid_flow_screen.py # 流体流动实验界面</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">14</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">| &nbsp; | &nbsp; |-- 文件: heat_transfer_screen.py # 传热实验界面</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">15</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">| &nbsp; | &nbsp; |-- 文件: oxygen_desorption_screen.py # 氧解吸实验界面</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">16</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">| &nbsp; | &nbsp; |-- 文件夹: processors &nbsp; &nbsp;  # 各实验数据处理模块</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">17</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">| &nbsp; | &nbsp; |-- 文件夹: utils &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; # 工具类，如配置文件、串口处理等</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">18</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">| &nbsp; | &nbsp; |-- 文件夹: widgets &nbsp; &nbsp; &nbsp; &nbsp; # 存放自定义的控件，如图表显示、输入框等</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">19</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">|-- 文件: LICENSE &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; # 开源许可证文件</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt CodeMirror-linenumber-show" style="left: 0px; width: 29px;">20</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">|-- 文件: README.md &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; # 项目说明文件</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">21</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">|-- 文件: requirements.txt &nbsp; &nbsp; &nbsp; &nbsp;  # 项目依赖包</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">22</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">|-- 文件: main.py &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; # 程序入口，启动应用</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">23</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">|-- 文件夹: logos &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; # 存放应用程序图标</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt CodeMirror-linenumber-show" style="left: 0px; width: 29px;">24</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">|-- 文件夹: manual &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  # 文档文件夹（为空）</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 504px;"></div><div class="CodeMirror-gutters" style="height: 504px;"><div class="CodeMirror-gutter CodeMirror-linenumbers" style="width: 37px;"></div></div></div></div></pre><h2 id='11-gui-文件夹'><span>1.1. gui 文件夹</span></h2><ul><li><p><strong><span>app.py</span></strong><span>：应用程序的主逻辑和界面管理。</span></p></li><li><p><strong><span>screens</span></strong><span>：不同实验的界面模块。</span></p><ul><li><p><strong><span>calculators</span></strong><span>：包含各实验的数据计算器。</span></p></li><li><p><strong><span>common_screens</span></strong><span>：包含界面布局和通用组件。</span></p></li><li><p><strong><span>common_widgets</span></strong><span>：界面中使用的各种小部件，例如表格、按钮等。</span></p></li><li><p><strong><span>processors</span></strong><span>：每种实验对应的数据处理模块。</span></p></li><li><p><strong><span>widgets</span></strong><span>：定制化的控件，用于显示和交互。</span></p></li><li><p><strong><span>distillation_screen.py</span></strong><span>：精馏实验界面。</span></p></li><li><p><strong><span>drying_screen.py</span></strong><span>：干燥实验界面。</span></p></li><li><p><strong><span>extraction_screen.py</span></strong><span>：萃取实验界面。</span></p></li><li><p><strong><span>filteration_screen.py</span></strong><span>：过滤实验界面。</span></p></li><li><p><strong><span>fluid_flow_screen.py</span></strong><span>：流体流动实验界面。</span></p></li><li><p><strong><span>heat_transfer_screen.py</span></strong><span>：传热实验界面。</span></p></li><li><p><strong><span>oxygen_desorption_screen.py</span></strong><span>：氧解吸实验界面。</span></p></li></ul></li></ul><h3 id='111-apppy-函数说明'><span>1.1.1. app.py 函数说明</span></h3><p><code>__init__</code></p><pre class="md-fences md-end-block md-fences-with-lineno ty-contain-cm modeLoaded" spellcheck="false" lang="python"><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="python"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 8.5px; left: 41.985px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 38px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre><div class="CodeMirror-linenumber CodeMirror-gutter-elt"><div>13</div></div></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation" style=""><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: -37.995px; width: 38px;"></div><div class="CodeMirror-gutter-wrapper CodeMirror-activeline-gutter" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt CodeMirror-linenumber-show" style="left: 0px; width: 29px;">1</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">__init__</span>(</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">2</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable-2">self</span>,</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">3</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">dx</span>: <span class="cm-builtin">float</span> <span class="cm-operator">=</span> <span class="cm-number">0.1</span>,</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">4</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">time_interval</span>: <span class="cm-builtin">int</span> <span class="cm-operator">=</span> <span class="cm-number">500</span>,</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">5</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">plot_max_points</span>: <span class="cm-builtin">int</span> <span class="cm-operator">=</span> <span class="cm-number">500</span>,</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">6</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">port_timeout</span>: <span class="cm-builtin">float</span> <span class="cm-operator">=</span> <span class="cm-number">0.25</span>,</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">7</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">std_limit</span>: <span class="cm-builtin">float</span> <span class="cm-operator">=</span> <span class="cm-number">0.005</span>,</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">8</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">time_lower_limit</span>: <span class="cm-builtin">int</span> <span class="cm-operator">=</span> <span class="cm-number">30</span>,</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">9</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">time_upper_limit</span>: <span class="cm-builtin">int</span> <span class="cm-operator">=</span> <span class="cm-number">40</span>,</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt CodeMirror-linenumber-show" style="left: 0px; width: 29px;">10</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">width_height_inches</span>: <span class="cm-builtin">tuple</span> <span class="cm-operator">=</span> (<span class="cm-number">10</span>, <span class="cm-number">7</span>),</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">11</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">dpi</span>: <span class="cm-builtin">int</span> <span class="cm-operator">=</span> <span class="cm-number">600</span>,</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 29px;">12</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"> &nbsp; &nbsp;<span class="cm-variable">py_path</span>: <span class="cm-builtin">str</span> <span class="cm-operator">=</span> <span class="cm-variable">os</span>.<span class="cm-property">path</span>.<span class="cm-property">dirname</span>(<span class="cm-variable">os</span>.<span class="cm-property">path</span>.<span class="cm-property">abspath</span>(<span class="cm-variable">__file__</span>))</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -37.995px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt CodeMirror-linenumber-show" style="left: 0px; width: 29px;">13</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">)</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 273px;"></div><div class="CodeMirror-gutters" style="height: 273px;"><div class="CodeMirror-gutter CodeMirror-linenumbers" style="width: 37px;"></div></div></div></div></pre><p><span>初始化应用程序，设置数据配置，创建界面窗口，加载所有实验屏幕并初始化当前屏幕。此函数还根据屏幕尺寸调整窗口大小，确保窗口显示在屏幕左上角，并启动主事件循环。</span></p><ul><li><p><strong><span>参数</span></strong><span>:</span></p><ul><li><p><code>dx</code><span>: 积分、绘图步长（默认值：0.1）</span></p></li><li><p><code>time_interval</code><span>: 记录数据的时间间隔（单位：毫秒，默认值：500）</span></p></li><li><p><code>plot_max_points</code><span>: 绘图最大点数（默认值：500）</span></p></li><li><p><code>port_timeout</code><span>: 串口超时时间（单位：秒，默认值：0.25）</span></p></li><li><p><code>std_limit</code><span>: 自动寻找平台期的标准差阈值（默认值：0.005）</span></p></li><li><p><code>time_lower_limit</code><span>: 自动寻找平台期的最小时间窗口（默认值：30）</span></p></li><li><p><code>time_upper_limit</code><span>: 自动寻找平台期的最大时间窗口（默认值：40）</span></p></li><li><p><code>width_height_inches</code><span>: 保存图片的尺寸（单位：英寸，默认值：(10, 7)）</span></p></li><li><p><code>dpi</code><span>: 图片的DPI（默认值：600）</span></p></li><li><p><code>py_path</code><span>: 当前脚本的路径（默认值：自动获取）</span></p></li></ul></li></ul><p><code>_create_mode_menu</code></p><pre class="md-fences md-end-block md-fences-with-lineno ty-contain-cm modeLoaded" spellcheck="false" lang="python"><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="python"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 8.5px; left: 31.98px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 28px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre><div class="CodeMirror-linenumber CodeMirror-gutter-elt"><div>1</div></div></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: -27.99px; width: 28px;"></div><div class="CodeMirror-gutter-wrapper CodeMirror-activeline-gutter" style="left: -27.99px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt CodeMirror-linenumber-show" style="left: 0px; width: 19px;">1</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">_create_mode_menu</span>(<span class="cm-variable-2">self</span>)</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 21px;"></div><div class="CodeMirror-gutters" style="height: 21px;"><div class="CodeMirror-gutter CodeMirror-linenumbers" style="width: 27px;"></div></div></div></div></pre><p><span>创建模式切换菜单，允许用户选择不同的实验模式进行切换。为每个实验模式添加对应的菜单项并绑定显示屏幕的功能。</span></p><p><code>show_screen</code></p><pre class="md-fences md-end-block md-fences-with-lineno ty-contain-cm modeLoaded" spellcheck="false" lang="python"><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="python"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 8.5px; left: 31.98px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 28px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre><div class="CodeMirror-linenumber CodeMirror-gutter-elt"><div>1</div></div></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: -27.99px; width: 28px;"></div><div class="CodeMirror-gutter-wrapper CodeMirror-activeline-gutter" style="left: -27.99px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt CodeMirror-linenumber-show" style="left: 0px; width: 19px;">1</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">show_screen</span>(<span class="cm-variable-2">self</span>, <span class="cm-variable">screen_name</span>)</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 21px;"></div><div class="CodeMirror-gutters" style="height: 21px;"><div class="CodeMirror-gutter CodeMirror-linenumbers" style="width: 27px;"></div></div></div></div></pre><p><span>根据传入的屏幕名称显示对应的实验界面。如果当前已有屏幕，则先隐藏当前屏幕。该方法允许在多个实验界面之间进行切换。</span></p><ul><li><p><strong><span>参数</span></strong><span>:</span></p><ul><li><p><code>screen_name</code><span>: 要显示的屏幕名称（字符串）。</span></p></li></ul></li></ul><p><code>change_mode</code></p><pre class="md-fences md-end-block md-fences-with-lineno ty-contain-cm modeLoaded" spellcheck="false" lang="python"><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="python"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 8.5px; left: 31.98px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 28px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre><div class="CodeMirror-linenumber CodeMirror-gutter-elt"><div>1</div></div></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: -27.99px; width: 28px;"></div><div class="CodeMirror-gutter-wrapper CodeMirror-activeline-gutter" style="left: -27.99px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt CodeMirror-linenumber-show" style="left: 0px; width: 19px;">1</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">change_mode</span>(<span class="cm-variable-2">self</span>, <span class="cm-operator">*</span><span class="cm-variable">args</span>)</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 21px;"></div><div class="CodeMirror-gutters" style="height: 21px;"><div class="CodeMirror-gutter CodeMirror-linenumbers" style="width: 27px;"></div></div></div></div></pre><p><span>根据当前选择的模式切换实验界面。此方法用于处理模式切换的事件，例如切换到不同的实验模式屏幕。</span></p><ul><li><p><strong><span>参数</span></strong><span>:</span></p><ul><li><p><code>args</code><span>: 通过参数传入的模式值，根据该值切换不同的屏幕。</span></p></li></ul></li></ul><p><code>data_changed</code></p><pre class="md-fences md-end-block md-fences-with-lineno ty-contain-cm modeLoaded" spellcheck="false" lang="python"><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang="python"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 8.5px; left: 31.98px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 28px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre><div class="CodeMirror-linenumber CodeMirror-gutter-elt"><div>1</div></div></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: -27.99px; width: 28px;"></div><div class="CodeMirror-gutter-wrapper CodeMirror-activeline-gutter" style="left: -27.99px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt CodeMirror-linenumber-show" style="left: 0px; width: 19px;">1</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;"><span class="cm-variable">data_changed</span>(<span class="cm-variable-2">self</span>)</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 21px;"></div><div class="CodeMirror-gutters" style="height: 21px;"><div class="CodeMirror-gutter CodeMirror-linenumbers" style="width: 27px;"></div></div></div></div></pre><p><span>数据修改响应函数，作为预留接口，方便未来扩展与数据变化的响应处理。当前版本未实现具体功能。</span></p><h3 id='112-screens-文件夹'><span>1.1.2. screens 文件夹</span></h3><p><span>包含所有实验界面模块，采用模块化设计实现功能复用</span></p><figure class='table-figure'><table><thead><tr><th><span>模块名称</span></th><th><span>功能说明</span></th></tr></thead><tbody><tr><td><span>calculators/</span></td><td><span>各实验专用计算器（数据处理核心）</span></td></tr><tr><td><span>common_screens/</span></td><td><span>基础界面框架和通用功能</span></td></tr><tr><td><span>common_widgets/</span></td><td><span>可复用界面组件库</span></td></tr><tr><td><span>processors/</span></td><td><span>实验数据后处理模块</span></td></tr><tr><td><span>utils/</span></td><td><span>通用工具类（配置/串口等）</span></td></tr><tr><td><span>widgets/</span></td><td><span>定制化UI组件</span></td></tr></tbody></table></figure><h4 id='1121-实验界面文件'><span>1.1.2.1. 实验界面文件</span></h4><ol start='' ><li><p><strong><span>distillation_screen.py</span></strong><span></span><br/><span>精馏实验可视化界面</span></p></li><li><p><strong><span>drying_screen.py</span></strong><span></span><br/><span>干燥曲线实时显示界面</span></p></li><li><p><strong><span>extraction_screen.py</span></strong><span></span><br/><span>萃取实验操作界面</span></p></li><li><p><strong><span>filteration_screen.py</span></strong><span></span><br/><span>过滤实验监控界面</span></p></li><li><p><strong><span>fluid_flow_screen.py</span></strong><span></span><br/><span>流体阻力与泵特性双实验集成界面</span></p></li><li><p><strong><span>heat_transfer_screen.py</span></strong><span></span><br/><span>传热界面</span></p></li><li><p><strong><span>oxygen_desorption_screen.py</span></strong><span></span><br/><span>氧解吸传质过程界面</span></p></li></ol><h4 id='1122-设计特点'><span>1.1.2.2. 设计特点</span></h4><ol start='' ><li><p><span>统一继承</span><code>Base_Screen</code><span>基础框架</span></p></li><li><p><span>计算器与界面分离架构</span></p></li><li><p><span>采用响应式布局设计</span></p></li><li><p><span>支持实验数据持久化</span></p></li><li><p><span>内置串口通信管理</span></p></li></ol><h4 id='1123-distillationscreenpy'><span>1.1.2.3. distillation_screen.py</span></h4><p><code>__init__(window)</code><span></span><br/><span>初始化精馏实验界面，继承基类</span><code>Base_Screen</code><span>，设置文件路径、处理器列表和图像路径初始状态，调用布局调整方法。</span></p><p><code>_init_parameter_input()</code><span></span><br/><span>完全覆盖基类参数输入配置，创建精馏实验专用参数组件，包含回流比(R)、αm、F(mL/min)、tS(℃)、tF(℃)等参数输入框，并设置验证规则。</span></p><p><code>_init_control_buttons()</code><span></span><br/><span>保留串口控制按钮并添加精馏实验专用按钮组（导入CSV、处理数据、绘制图形），调整按钮文本和状态。</span></p><p><code>_adjust_layout()</code><span></span><br/><span>配置表格初始列和列宽，结果表格预设列宽为[80,100,120,120,100]，支持后续动态列更新。</span></p><p><code>start_data_acquisition()</code><span></span><br/><span>实现采集启动功能，检查串口连接状态后开始采集，显示状态提示信息。</span></p><p><code>stop_data_acquisition()</code><span></span><br/><span>实现停止采集功能，更新状态显示并提示用户。</span></p><p><code>load_data()</code><span></span><br/><span>加载CSV实验数据文件，动态生成表格列（序号+CSV列头），更新原始数据表格显示。</span></p><p><code>process_data()</code><span></span><br/><span>执行数据处理流程，根据界面参数创建处理器，计算理论塔板数等结果并更新结果表格。</span></p><p><code>plot_graph()</code><span></span><br/><span>生成McCabe-Thiele图等精馏实验图表，更新绘图框架显示，启用分页控件。</span></p><p><code>_create_processors()</code><span></span><br/><span>根据界面参数动态创建处理器实例，包含常规回流比(R=4)和全回流(R=∞)两种情况。</span></p><p><code>_process_all_cases()</code><span></span><br/><span>批量处理所有回流比情况，调用处理器进行计算但不立即显示图表。</span></p><p><code>_update_raw_table(df)</code><span></span><br/><span>将DataFrame数据格式化后填充原始数据表格，自动添加行号列。</span></p><p><code>_update_result_table()</code><span></span><br/><span>格式化显示处理结果，包含回流比、理论/实际塔板数（保留2位小数）和分离效率。</span></p><p><code>_generate_plots()</code><span></span><br/><span>生成McCabe-Thiele图并保存到指定路径，收集所有生成的图像文件路径。</span></p><p><code>_get_plot_paths()</code><span></span><br/><span>验证并返回实际存在的图表文件路径列表，确保只显示有效图像。</span></p><h4 id='1124-dryingscreenpy'><span>1.1.2.4. drying_screen.py</span></h4><p><code>__init__(window)</code><span></span><br/><span>初始化干燥实验界面，继承基类</span><code>Base_Screen</code><span>，设置文件路径、处理器和结果数据初始状态，调用组件调整和按钮状态更新方法。</span></p><p><code>_adjust_base_components()</code><span></span><br/><span>调整界面布局，隐藏不需要的参数输入组件，初始化专用表格配置（原始数据表列宽[120,120,140,140]，结果表列宽[180,220]）。</span></p><p><code>_init_drying_tables()</code><span></span><br/><span>创建优化后的表格布局，原始数据表显示15行数据，结果表显示8行数据，使用pack布局管理器排列。</span></p><p><code>_update_button_states()</code><span></span><br/><span>根据串口连接状态动态更新按钮可用性，实验控制按钮在串口连接后启用，数据处理按钮在加载文件后启用。</span></p><p><code>_find_named_frame(frame_name)</code><span></span><br/><span>递归查找指定名称的框架组件，支持在多级子组件中定位目标框架。</span></p><p><code>_open_serial(port, baudrate)</code><span></span><br/><span>重写串口打开方法，连接成功后更新按钮状态并显示提示信息，异常时调用统一错误处理。</span></p><p><code>_close_serial()</code><span></span><br/><span>重写串口关闭方法，断开连接后更新按钮状态并显示提示信息。</span></p><p><code>start_data_acquisition()</code><span></span><br/><span>实现数据采集启动逻辑，需先验证串口连接状态，显示处理中提示框，预留具体采集逻辑实现位置。</span></p><p><code>stop_data_acquisition()</code><span></span><br/><span>停止数据采集，关闭处理中提示框并显示操作提示。</span></p><p><code>load_data()</code><span></span><br/><span>加载干燥实验CSV数据文件，验证必须包含&quot;原始数据1&quot;和&quot;原始数据2&quot;两个文件，读取数据后更新原始表格。</span></p><p><code>_validate_files(file_paths)</code><span></span><br/><span>验证文件命名规范，确保加载的文件包含实验所需的全部数据类型，缺失时抛出明确错误。</span></p><p><code>_update_raw_table(data)</code><span></span><br/><span>格式化显示原始实验数据，数值类型保留2位小数，支持混合数据类型显示。</span></p><p><code>process_data()</code><span></span><br/><span>执行数据处理流程，计算恒定干燥速率、传热系数等关键参数，生成图表文件路径，更新结果表格。</span></p><p><code>_update_result_table()</code><span></span><br/><span>格式化显示处理结果，关键参数显示4-6位小数精度，包括恒定干燥速率、传热系数和初始体积流量。</span></p><p><code>plot_graph()</code><span></span><br/><span>显示生成的干燥曲线图表，支持多图切换查看，需先完成数据处理流程。</span></p><p><code>_handle_error(context, error)</code><span></span><br/><span>统一错误处理方法，关闭处理中提示框，显示错误弹窗并记录详细错误日志到文件。</span></p><h4 id='1125-extractionscreenpy'><span>1.1.2.5. extraction_screen.py</span></h4><p><code>__init__(window)</code><span></span><br/><span>初始化萃取实验界面，继承基类</span><code>Base_Screen</code><span>的初始化方法，创建文件字典用于存储原始数据和分配曲线文件路径，调用组件调整和按钮状态更新方法。</span></p><p><code>_adjust_components()</code><span></span><br/><span>调整界面组件布局，重新创建原始数据表格（15行高度）和结果表格（8行高度），调整列宽配置，使用</span><code>pack</code><span>布局管理器进行组件排列。</span></p><p><code>_update_button_states()</code><span></span><br/><span>更新按钮可用状态，检查文件字典中是否同时存在原始数据和分配曲线文件，根据检查结果设置数据处理按钮的启用/禁用状态。</span></p><p><code>_find_button(frame_name, column)</code><span></span><br/><span>查找指定位置的按钮组件，根据容器框架名称和列号定位按钮对象，若组件不存在会引发</span><code>tkinter.TclError</code><span>。</span></p><p><code>load_data()</code><span></span><br/><span>加载双CSV文件数据，弹出文件选择对话框，通过智能分类和验证后读取原始数据CSV并更新表格，捕获文件读取错误并记录日志。</span></p><p><code>_classify_files(paths)</code><span></span><br/><span>智能分类CSV文件，根据文件名中的关键词（原始数据/origin/</span><em><span>m，分配曲线/distribution/</span></em><span>d）将文件分类到origin/distribution键中。</span></p><p><code>_validate_files()</code><span></span><br/><span>验证文件完整性，检查文件字典是否存在空值，若存在缺失文件则抛出包含明确提示信息的</span><code>ValueError</code><span>。</span></p><p><code>process_data()</code><span></span><br/><span>执行数据处理流程，显示处理中提示框后初始化处理器并运行计算，更新结果表格和状态提示，需确保已完整加载必需文件。</span></p><p><code>_update_result_table()</code><span></span><br/><span>更新结果表格数据，显示分配系数（保留4位小数）、操作线斜率（保留2位小数）和积分结果（科学计数法格式）。</span></p><p><code>plot_graph()</code><span></span><br/><span>显示处理生成的图表，检查处理器输出目录并加载所有PNG文件，调用基类方法显示图片，自动触发首张图片显示。</span></p><p><code>_safe_close()</code><span></span><br/><span>安全释放资源，删除处理器实例并调用基类清理方法，确保程序退出时正确释放所有资源。</span></p><h4 id='1126-filterationscreenpy'><span>1.1.2.6. filteration_screen.py</span></h4><p><code>__init__(window)</code><span></span><br/><span>初始化过滤实验界面，继承基类</span><code>Base_Screen</code><span>，设置CSV文件路径、处理数据和处理器为初始状态，调用实验按钮配置方法。</span></p><p><code>_configure_experiment_buttons()</code><span></span><br/><span>配置实验专用按钮状态，保留但禁用串口功能按钮，保持界面布局完整性。</span></p><p><code>_disable_unimplemented_buttons()</code><span></span><br/><span>禁用未实现功能的按钮组件，特别是串口相关按钮，通过遍历按钮框架子组件实现。</span></p><p><code>load_data()</code><span></span><br/><span>加载CSV实验数据文件，使用pandas读取并预处理数值数据，更新原始数据表格显示，包含错误处理和状态提示。</span></p><p><code>process_data()</code><span></span><br/><span>执行数据处理流程，初始化处理器进行斜率/截距计算，将结果更新至结果表格，数值格式化为4位小数和2位小数。</span></p><p><code>plot_graph()</code><span></span><br/><span>生成实验图表并更新显示，调用处理器的绘图方法获取图像路径，更新绘图框架内容，包含处理状态提示。</span></p><p><code>_safe_close()</code><span></span><br/><span>安全释放资源，清理处理器实例并调用基类关闭方法，确保程序退出时资源正确释放。</span></p><h4 id='1127-fluidflowscreenpy'><span>1.1.2.7. fluid_flow_screen.py</span></h4><p><code>__init__(window)</code><span></span><br/><span>初始化流体流动实验界面，继承基类</span><code>Base_Screen</code><span>，设置处理器、文件路径和图像路径初始状态，调用组件调整和按钮状态更新方法。</span></p><p><code>_adjust_components()</code><span></span><br/><span>调整界面表格布局，重新配置原始数据表格（15行高度，列宽[60,120,120,120]）和结果表格（8行高度，列宽[60,120,120,120,120,120]），设置图像路径更新方法。</span></p><p><code>_update_button_states()</code><span></span><br/><span>根据文件加载状态更新数据处理按钮可用性，当CSV文件路径列表非空时启用处理按钮。</span></p><p><code>_find_button(frame_name, column)</code><span></span><br/><span>在指定框架中按列号定位按钮组件，用于动态控制按钮状态。</span></p><p><code>load_data()</code><span></span><br/><span>加载流体阻力和离心泵实验数据文件，通过智能分类验证文件后，读取并显示流体阻力数据到原始表格，包含完整的错误处理流程。</span></p><p><code>_classify_files(paths)</code><span></span><br/><span>根据文件名关键词（流体阻力/fluid，离心泵/pump）自动分类实验数据文件，返回排序后的文件路径列表。</span></p><p><code>_validate_files()</code><span></span><br/><span>验证是否同时包含两类实验文件，缺失时抛出包含明确命名提示的ValueError异常。</span></p><p><code>process_data()</code><span></span><br/><span>执行完整的数据处理流程，包括流体阻力计算和离心泵特性分析，通过处理器生成计算结果并更新结果表格。</span></p><p><code>_update_result_table()</code><span></span><br/><span>格式化显示处理结果，流体阻力部分显示平均雷诺数和摩擦系数，离心泵部分显示平均扬程、功率和效率，均保留2位小数。</span></p><p><code>plot_graph()</code><span></span><br/><span>生成并显示实验图表，精确匹配三种标准图表文件（阻力系数拟合和泵特性曲线），初始化绘图框架并显示首张图片。</span></p><p><code>_safe_close()</code><span></span><br/><span>安全释放资源，确保处理窗口关闭后清理处理器实例，最后调用基类关闭方法完成界面清理。</span></p><h4 id='1128-heattransferscreenpy'><span>1.1.2.8. heat_transfer_screen.py</span></h4><p><code>__init__(window)</code><span></span><br/><span>初始化传热实验界面，继承优化后的基类版本，设置文件路径和处理器初始状态，调用增强初始化方法配置界面。</span></p><p><code>_enhance_init()</code><span></span><br/><span>执行额外的初始化配置，创建参数输入组件，设置初始状态提示，初始化日志记录器。</span></p><p><code>_create_parameter_widget()</code><span></span><br/><span>创建专用的参数输入组件模板，使用StringEntriesWidget实现参数输入区域，支持后续扩展。</span></p><p><code>load_data()</code><span></span><br/><span>加载传热实验CSV文件，支持多文件选择，自动分类不同实验条件的文件，验证完整性后加载数据到原始表格。</span></p><p><code>_classify_files(paths)</code><span></span><br/><span>智能分类传入的文件路径，识别无/有强化套管数据文件及其预处理文件，缺失必要文件时抛出明确错误。</span></p><p><code>process_data()</code><span></span><br/><span>执行传热实验数据处理流程，分步骤计算和存储结果，更新结果表格显示关键传热参数。</span></p><p><code>_update_result_table()</code><span></span><br/><span>格式化显示处理结果，包括雷诺数(Re)、普朗特数(Pr)和Nu/Pr^0.4等参数，均保留2位小数精度。</span></p><p><code>plot_graph()</code><span></span><br/><span>生成并显示传热性能图表，包括拟合曲线和性能对比图，自动压缩结果文件节省空间。</span></p><p><code>_update_table(table, data)</code><span></span><br/><span>通用表格更新方法，支持数值格式化（保留2位小数）和类型安全转换，自动添加行号列。</span></p><p><code>_handle_error(title, error)</code><span></span><br/><span>统一错误处理机制，记录详细错误日志到文件，显示用户友好提示，确保资源正确释放。</span></p><p><code>start_data_acquisition()</code><span></span><br/><span>空实现采集方法（本实验不需要实时采集功能），保持接口兼容性。</span></p><p><code>stop_data_acquisition()</code><span></span><br/><span>空实现停止方法（本实验不需要实时采集功能），保持接口兼容性。</span></p><h4 id='1129-oxygendesorptionscreenpy'><span>1.1.2.9. oxygen_desorption_screen.py</span></h4><p><code>__init__(window)</code><span></span><br/><span>初始化氧解吸实验界面，继承基类</span><code>Base_Screen</code><span>，设置文件路径字典和图像路径列表，调用自定义组件初始化方法。</span></p><p><code>_init_custom_components()</code><span></span><br/><span>配置实验特有界面元素，包括更新表格列宽（原始表各列100px，结果表各列150px），初始化参数输入区域，绑定功能按钮。</span></p><p><code>_bind_buttons()</code><span></span><br/><span>动态查找并绑定基类创建的&quot;处理数据&quot;和&quot;绘制图形&quot;按钮实例，便于后续状态控制。</span></p><p><code>_init_parameter_input()</code><span></span><br/><span>初始化参数输入框架，当前版本不包含具体参数输入（空配置），保留参数变更事件绑定结构。</span></p><p><code>load_data()</code><span></span><br/><span>重写基类数据加载方法，调用文件导入逻辑，支持多文件选择。</span></p><p><code>_import_all_files()</code><span></span><br/><span>实现多文件导入功能，根据文件名关键词（干填料/湿填料/水流量一定/空气流量一定）自动分类文件路径。</span></p><p><code>_check_files_complete()</code><span></span><br/><span>验证实验必需的4类文件是否齐全，更新处理按钮状态，缺失时显示明确提示。</span></p><p><code>_load_data_preview(path)</code><span></span><br/><span>加载干填料文件的预览数据到原始表格，显示水流量、空气流量等关键实验参数。</span></p><p><code>process_data()</code><span></span><br/><span>执行完整数据处理流程，初始化实验处理器并运行所有计算，更新结果表格，启用绘图按钮。</span></p><p><code>_update_results()</code><span></span><br/><span>格式化显示计算结果，包括填料塔性能拟合类型和氧解吸传质系数（保留4位小数）。</span></p><p><code>plot_graph()</code><span></span><br/><span>动态获取最新生成的图表路径（填料塔性能对比图和氧解吸传质关联图），更新绘图区域显示。</span></p><p><code>_on_parameter_change(event)</code><span></span><br/><span>参数变更响应方法（当前版本未实际使用，保留结构）。</span></p><p><code>_safe_close()</code><span></span><br/><span>安全关闭方法，确保资源正确释放，调用基类关闭逻辑。</span></p><h3 id='113-basescreen-文件夹'><span>1.1.3. base_screen 文件夹</span></h3><h4 id='1131-basescreenpy'><span>1.1.3.1. base_screen.py</span></h4><p><span>GUI基础屏幕模块，提供实验界面通用框架和核心功能组件</span></p><p><code>Base_Screen(ttk.Frame)</code><span>：实验屏幕基类，集成界面布局、串口通信、数据展示等核心功能</span><br/><code>__init__(self, window)</code><span>：初始化框架并绑定安全关闭事件</span><br/><code>_init_status_bar(self)</code><span>：创建底部状态栏显示实时状态</span><br/><code>_init_components(self)</code><span>：构建左右面板基础布局</span><br/><code>_init_parameter_input(self)</code><span>：创建空参数输入容器供子类扩展</span><br/><code>_init_control_buttons(self)</code><span>：初始化实验控制和数据处理按钮组</span><br/><code>_init_data_tables(self)</code><span>：创建原始/结果双表格组件</span><br/><code>_toggle_serial(self)</code><span>：切换串口连接状态</span><br/><code>start_data_acquisition(self)</code><span>：数据采集启动接口（需子类实现）</span><br/><code>show_processing(self)</code><span>：显示带进度条的模态对话框</span><br/><code>update_table(self)</code><span>：通用表格数据更新方法</span><br/><code>_safe_close(self)</code><span>：安全关闭窗口并释放资源  </span></p><h4 id='1132-initpy'><span>1.1.3.2. </span><strong><span>init</span></strong><span>.py</span></h4><p><span>(空文件，无函数或类需要说明)</span></p><h4 id='1133-calculators-文件夹'><span>1.1.3.3. calculators 文件夹</span></h4><h5 id='11331-distillationcalculatorpy'><span>1.1.3.3.1. distillation_calculator.py</span></h5><p><code>Distillation_Calculator</code><span>：精馏塔计算器类</span><br/><code>__init__</code><span>：初始化并执行完整计算流程</span><br/><code>set_constants</code><span>：设置乙醇-水物性常数</span><br/><code>calculate_feed_parameters</code><span>：计算进料热状态参数q值</span><br/><code>calculate_x_ethanol</code><span>：体积分数转摩尔分数</span><br/><code>calculate_compositions</code><span>：计算关键组分组成</span><br/><code>solve_material_balance</code><span>：求解物料平衡方程</span><br/><code>y_e</code><span>：气液平衡方程计算</span><br/><code>x_e</code><span>：反平衡方程计算</span><br/><code>y_np1</code><span>：精馏段操作线方程</span><br/><code>y_mp1</code><span>：提馏段操作线方程</span><br/><code>calculate_stages</code><span>：逐板法计算理论塔板数</span><br/><code>save_results</code><span>：保存关键计算结果  </span></p><h5 id='11332-dryingcalculatorpy'><span>1.1.3.3.2. drying_calculator.py</span></h5><p><code>Drying_Calculator</code><span>：干燥实验计算器</span><br/><code>__init__</code><span>：初始化并加载双数据文件</span><br/><code>load_data</code><span>：解析静态参数和时间序列数据</span><br/><code>preprocess_data</code><span>：核心预处理计算干基含水量</span><br/><code>further_calculations</code><span>：高级计算传热系数和流量</span><br/><code>run_full_calculation</code><span>：执行完整计算流程  </span></p><h5 id='11333-extractioncalculatorpy'><span>1.1.3.3.3. extraction_calculator.py</span></h5><p><code>Extraction_Calculator</code><span>：萃取实验计算器</span><br/><code>__init__</code><span>：初始化主数据和分配曲线文件</span><br/><code>load_data</code><span>：加载流量和滴定数据</span><br/><code>preprocess_data</code><span>：计算苯甲酸浓度和物料平衡</span><br/><code>load_distribution_curve_data</code><span>：加载分配曲线数据集</span><br/><code>fit_distribution_curve</code><span>：三次多项式拟合分配曲线</span><br/><code>calculate_operating_lines</code><span>：计算操作线参数</span><br/><code>perform_graphical_integration</code><span>：图解积分计算传质单元数</span><br/><code>run_calculations</code><span>：执行完整计算流程  </span></p><h5 id='11334-filterationcalculatorpy'><span>1.1.3.3.4. filteration_calculator.py</span></h5><p><code>Filteration_Calculator</code><span>：过滤实验计算器</span><br/><code>__init__</code><span>：初始化过滤面积参数</span><br/><code>load_csv_data</code><span>：加载并清洗CSV数据</span><br/><code>perform_linear_fit</code><span>：执行线性回归拟合</span><br/><code>detect_outliers</code><span>：Z-score异常值检测</span><br/><code>refit_data_after_outlier_removal</code><span>：异常值移除后重新拟合</span><br/><code>process_single_group_data</code><span>：处理单组实验数据</span><br/><code>process_all_groups</code><span>：处理全部三组数据  </span></p><h5 id='11335-fluidflowcalculatorpy'><span>1.1.3.3.5. fluid_flow_calculator.py</span></h5><p><code>Fluid_Flow_Calculator</code><span>：流体阻力分析器</span><br/><code>__init__</code><span>：初始化管径和物性参数</span><br/><code>process</code><span>：计算雷诺数和摩擦系数</span><br/><code>Centrifugal_Pump_Characteristics_Calculator</code><span>：离心泵分析器</span><br/><code>quadratic</code><span>：二次拟合函数</span><br/><code>process</code><span>：计算扬程和效率参数  </span></p><h5 id='11336-heattransfercalculatorpy'><span>1.1.3.3.6. heat_transfer_calculator.py</span></h5><p><code>Heat_Transfer_Calculator</code><span>：传热分析器</span><br/><code>__init__</code><span>：分类强化/非强化套管数据</span><br/><code>_categorize_files</code><span>：根据文件名自动分类</span><br/><code>preprocess_data</code><span>：预处理物性参数和传热系数</span><br/><code>fit_func</code><span>：通用对数坐标拟合函数</span><br/><code>process_data</code><span>：执行完整传热分析  </span></p><h5 id='11337-oxygendesorptioncalculatorpy'><span>1.1.3.3.7. oxygen_desorption_calculator.py</span></h5><p><code>Experiment_Data_Loader</code><span>：实验数据加载器</span><br/><code>__init__</code><span>：初始化四类数据文件路径</span><br/><code>get_file</code><span>：通过标识符获取文件路径</span><br/><code>Packed_Tower_Calculator</code><span>：填料塔分析器</span><br/><code>calc_fluid_dynamics</code><span>：流体力学参数计算</span><br/><code>Oxygen_Desorption_Calculator</code><span>：氧解吸分析器</span><br/><code>oxygen_solubility</code><span>：温度修正溶解度公式</span><br/><code>analyze_file</code><span>：计算传质系数和推动力</span></p><h5 id='11338-initpy'><span>1.1.3.3.8. </span><strong><span>init</span></strong><span>.py</span></h5><p><span>(空文件，无函数或类需要说明)</span></p><h4 id='1134-plotters-文件夹'><span>1.1.3.4. plotters 文件夹</span></h4><h5 id='11341-distillationplotterpy'><span>1.1.3.4.1. distillation_plotter.py:</span></h5><p><code>Distillation_Plotter</code><span> 精馏塔可视化绘图类，生成McCabe-Thiele图及理论塔板计算结果</span>
+<code>_generate_plot_data</code><span> 生成绘图所需数据</span>
+<code>plot_mccabe_thiele</code><span> 绘制McCabe-Thiele图</span></p><h5 id='11342-dryingplotterpy'><span>1.1.3.4.2. drying_plotter.py:</span></h5><p><code>Drying_Plotter</code><span> 干燥实验数据可视化类</span>
+<code>plot_drying_curve</code><span> 绘制物料干基含水量随时间变化曲线</span>
+<code>plot_drying_rate_curve</code><span> 绘制干燥速率曲线</span>
+<code>integrate_images</code><span> 生成组合对比图</span>
+<code>compress_results</code><span> 打包结果文件</span>
+<code>serialize_results</code><span> 序列化实验结果</span></p><h5 id='11343-extractionplotterpy'><span>1.1.3.4.3. extraction_plotter.py:</span></h5><p><code>Extraction_Plotter</code><span> 萃取实验数据可视化类</span>
+<code>plot_origin_curves</code><span> 绘制分配曲线与操作线分析图</span>
+<code>plot_integration_curves</code><span> 绘制图解积分曲线</span>
+<code>package_results</code><span> 打包分析结果</span></p><h5 id='11344-filterationplotterpy'><span>1.1.3.4.4. filteration_plotter.py:</span></h5><p><code>Filteration_Plotter</code><span> 过滤实验数据可视化类</span>
+<code>create_initial_fit_figure</code><span> 创建初拟合图表</span>
+<code>create_refit_figure</code><span> 创建重新拟合图表</span>
+<code>generate_comparison_figures</code><span> 生成对比分析图</span>
+<code>integrate_figures</code><span> 合并所有图表</span></p><h5 id='11345-fluidflowplotterpy'><span>1.1.3.4.5. fluid_flow_plotter.py:</span></h5><p><code>Fluid_Flow_Plotter</code><span> 流体阻力数据可视化类</span>
+<code>plot</code><span> 绘制雷诺数与阻力系数双对数拟合图</span>
+<code>Centrifugal_Pump_Characteristics_Plotter</code><span> 离心泵特性曲线可视化类</span>
+<code>PlotManager</code><span> 绘图管理类，协调多个绘图任务</span></p><h5 id='11346-heattransferplotterpy'><span>1.1.3.4.6. heat_transfer_plotter.py:</span></h5><p><code>Heat_Transfer_Plotter</code><span> 传热实验数据可视化类</span>
+<code>plot_fit</code><span> 执行曲线拟合并绘制结果</span>
+<code>generate_comparison_plot</code><span> 生成传热性能对比图</span></p><h5 id='11347-oxygendesorptionplotterpy'><span>1.1.3.4.7. oxygen_desorption_plotter.py:</span></h5><p><code>Packed_Tower_Plotter</code><span> 填料塔流体力学性能可视化类</span>
+<code>plot_comparison</code><span> 绘制干/湿填料性能对比图</span>
+<code>Oxygen_Desorption_Plotter</code><span> 氧解吸实验数据可视化类</span>
+<code>plot_correlation</code><span> 绘制传质系数关联图</span></p><h5 id='11348-initpy'><span>1.1.3.4.8. </span><strong><span>init</span></strong><span>.py:</span></h5><p><span>(空文件，无函数或类需要说明)</span></p><h4 id='1135-processors-文件夹'><span>1.1.3.5. processors 文件夹</span></h4><h5 id='11351-distillationexperimentprocessorpy'><span>1.1.3.5.1. distillation_experiment_processor.py</span></h5><p><code>Distillation_Experiment_Processor</code><span> 精馏实验流程处理器，自动化执行完整实验流程并管理结果文件</span>
+<code>_prepare_directory</code><span> 创建结构化输出目录</span>
+<code>process_experiment</code><span> 执行完整实验处理流程</span>
+<code>_save_text_results</code><span> 保存文本计算结果</span>
+<code>_generate_plots</code><span> 生成可视化图表</span>
+<code>_create_archive</code><span> 创建ZIP打包文件</span></p><h5 id='11352-dryingexperimentprocessorpy'><span>1.1.3.5.2. drying_experiment_processor.py</span></h5><p><code>Drying_Experiment_Processor</code><span> 干燥实验数据处理类，继承自Drying_Calculator</span>
+<code>process_experiment</code><span> 处理整个干燥实验过程</span>
+<code>get_results</code><span> 获取完整的计算结果</span>
+<code>get_plots</code><span> 获取绘图结果</span></p><h5 id='11353-extractionexperimentprocessorpy'><span>1.1.3.5.3. extraction_experiment_processor.py</span></h5><p><code>ExtractionExperimentProcessor</code><span> 萃取实验数据处理类</span>
+<code>validate_files</code><span> 验证输入文件有效性</span>
+<code>setup_components</code><span> 初始化各处理组件</span>
+<code>process_data</code><span> 执行完整数据处理流程</span>
+<code>print_summary</code><span> 输出处理结果摘要</span>
+<code>run</code><span> 主执行流程</span></p><h5 id='11354-filterationexperimentprocessorpy'><span>1.1.3.5.4. filteration_experiment_processor.py</span></h5><p><code>Filteration_Experiment_Processor</code><span> 过滤实验数据处理类</span>
+<code>calculate</code><span> 使用计算类处理数据</span>
+<code>store</code><span> 存储处理后的数据</span>
+<code>plot</code><span> 生成所有所需图形</span>
+<code>compress_results</code><span> 压缩结果图像文件</span></p><h5 id='11355-fluidflowexperimentprocessorpy'><span>1.1.3.5.5. fluid_flow_experiment_processor.py</span></h5><p><code>Fluid_Flow_Expriment_Processor</code><span> 流体流动实验处理类</span>
+<code>process_fluid_flow</code><span> 处理流体阻力实验数据</span>
+<code>process_pump_characteristics</code><span> 处理离心泵特性实验数据</span>
+<code>generate_all_plots</code><span> 生成所有分析图表</span>
+<code>get_fluid_flow_results</code><span> 获取流体阻力实验结果</span>
+<code>get_pump_characteristics_results</code><span> 获取离心泵特性实验结果</span></p><h5 id='11356-heattransferexperimentprocessorpy'><span>1.1.3.5.6. heat_transfer_experiment_processor.py</span></h5><p><code>Heat_Transfer_Experiment_Processor</code><span> 传热实验数据处理类</span>
+<code>calculate</code><span> 处理传热实验数据</span>
+<code>store</code><span> 存储处理后的数据</span>
+<code>plot</code><span> 生成所有图形</span>
+<code>compress_results</code><span> 压缩结果文件</span>
+<code>fit_data_summary</code><span> 生成实验拟合数据报告</span></p><h5 id='11357-oxygendesorptionexperimentprocessorpy'><span>1.1.3.5.7. oxygen_desorption_experiment_processor.py</span></h5><p><code>Result_Compressor</code><span> 结果文件压缩工具类</span>
+<code>Oxygen_Desorption_Experiment_Processor</code><span> 氧解吸实验处理类</span>
+<code>run_all_calculations</code><span> 执行完整计算流程</span></p><h5 id='11358-initpy'><span>1.1.3.5.8. </span><strong><span>init</span></strong><span>.py</span></h5><p><span>(空文件，无函数或类需要说明)</span></p><h4 id='1136-commonwidgets-文件夹'><span>1.1.3.6. common_widgets 文件夹</span></h4><h5 id='11361-plotwidgetpy'><span>1.1.3.6.1. plot_widget.py</span></h5><p><code>PlotWidget</code><span>类：基于Matplotlib的Tkinter绘图控件，支持折线图、散点图和图像显示，带分页功能。</span></p><p><code>_set_plot_style</code><span>函数：配置图表样式（隐藏刻度线并保留边框）。</span></p><p><code>clear</code><span>函数：清除当前图表内容。</span></p><p><code>plot</code><span>函数：绘制折线图。</span></p><p><code>scatter</code><span>函数：绘制散点图。</span></p><p><code>_adjust_plot_limits</code><span>函数：自动调整坐标范围使图形填满绘图区。</span></p><p><code>show_current_image</code><span>函数：显示当前图像（填满整个绘图区）。</span></p><p><code>resize_image</code><span>函数：响应窗口大小变化重新绘制图像。</span></p><p><code>_create_pagination_controls</code><span>函数：创建居中分页控制组件。</span></p><p><code>set_images_paths</code><span>函数：设置图像路径列表并显示第一张图。</span></p><p><code>_update_page_controls</code><span>函数：更新分页控制组件的状态。</span></p><p><code>prev_page</code><span>函数：切换到上一页图像。</span></p><p><code>next_page</code><span>函数：切换到下一页图像。</span></p><h5 id='11362-stringentrieswidgetpy'><span>1.1.3.6.2. string_entries_widget.py</span></h5><p><code>StringEntriesWidget</code><span>类：统一输入框宽度的输入组件，支持验证和参数变更事件。</span></p><p><code>update_entries</code><span>函数：根据配置更新输入框布局和验证规则。</span></p><p><code>_validate_input</code><span>函数：使用正则表达式验证输入内容。</span></p><p><code>get_values</code><span>函数：获取所有输入框的值。</span></p><p><code>set_values</code><span>函数：批量设置输入框的值。</span></p><p><code>clear</code><span>函数：清空所有输入框。</span></p><p><code>validate_all</code><span>函数：验证所有输入框内容是否符合规则。</span></p><h5 id='11363-tablewidgetpy'><span>1.1.3.6.3. table_widget.py</span></h5><p><code>TableWidget</code><span>类：通用表格数据显示组件，支持动态列配置和多线程安全操作。</span></p><p><code>_create_table</code><span>函数：初始化表格核心组件和列配置。</span></p><p><code>_create_scrollbar</code><span>函数：构建表格的垂直滚动条系统。</span></p><p><code>update_columns</code><span>函数：动态更新表格列配置。</span></p><p><code>append</code><span>函数：添加数据行并支持自动滚动。</span></p><p><code>append_thread_safe</code><span>函数：线程安全方式添加数据行。</span></p><p><code>_process_buffer</code><span>函数：处理缓冲区中的待添加数据。</span></p><p><code>clear</code><span>函数：清空表格所有数据。</span></p><p><code>set_cell_value</code><span>函数：设置指定单元格的值。</span></p><p><code>get_cell_value</code><span>函数：获取指定单元格的值。</span></p><p><code>sort_column</code><span>函数：按列排序表格数据。</span></p><p><code>set_font</code><span>函数：设置表格字体样式。</span></p><p><code>set_foreground</code><span>函数：设置表格前景色。</span></p><p><code>set_background</code><span>函数：设置表格背景色。</span></p><p><code>set_row_colors</code><span>函数：设置行的交替颜色。</span></p><p><code>auto_resize_columns</code><span>函数：自动调整列宽以适应内容。</span></p><h5 id='11364-initpy'><span>1.1.3.6.4. </span><strong><span>init</span></strong><span>.py</span></h5><p><span>(空文件，无函数或类需要说明)</span></p><h4 id='1137-utils-文件夹'><span>1.1.3.7. utils 文件夹</span></h4><h5 id='11371-configpy'><span>1.1.3.7.1. config.py</span></h5><p><code>SHORTCUT_CODE</code><span> 快捷键对应event.state的数值字典</span>
+<code>DATA_CONFIG</code><span> 应用数据配置字典，包含窗口、模式等设置</span>
+<code>SCREEN_CONFIG</code><span> 屏幕显示配置，包含边框宽度和样式</span>
+<code>MAIN_FRAME_CONFIG</code><span> 主框架显示配置</span>
+<code>RAISED_SUBFRAME_CONFIG</code><span> 凸起子框架显示配置</span><br/><code>FLAT_SUBFRAME_CONFIG</code><span> 扁平子框架显示配置</span>
+<code>ENTRY_LABEL_CONFIG</code><span> 输入框标签配置</span>
+<code>PLOT_CONFIG</code><span> 绘图样式配置字典</span>
+<code>DEFAULT_DATA_VALUE</code><span> 默认数据值字典</span></p><h5 id='11372-expserialpy'><span>1.1.3.7.2. expserial.py</span></h5><p><code>Experiment_Serial</code><span> 实验序列化类(当前为空实现)</span></p><h5 id='11373-initpy'><span>1.1.3.7.3. </span><strong><span>init</span></strong><span>.py</span></h5><p><span>(空文件，无函数或类需要说明)</span></p><h4 id='1138-maths-文件夹'><span>1.1.3.8. maths 文件夹</span></h4><h5 id='11381-commonmathspy'><span>1.1.3.8.1. common_maths.py  </span></h5><p><code>Class</code><span>类：示例类（当前为空实现）。</span><br/><code>func</code><span>函数：示例函数（当前为空实现）。  </span></p><h5 id='11382-initpy'><span>1.1.3.8.2. </span><strong><span>init</span></strong><span>.py  </span></h5><p><span>(空文件，无函数或类需要说明)</span></p><h4 id='1139-widgets-文件夹'><span>1.1.3.9. widgets 文件夹</span></h4><h5 id='11391-initpy'><span>1.1.3.9.1. </span><strong><span>init</span></strong><span>.py  </span></h5><p><span>(空文件，无函数或类需要说明)</span></p><h3 id='114-logos-文件夹'><span>1.1.4. logos 文件夹</span></h3><pre class="md-fences md-end-block md-fences-with-lineno ty-contain-cm modeLoaded" spellcheck="false" lang=""><div class="CodeMirror cm-s-inner cm-s-null-scroll CodeMirror-wrap" lang=""><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 8.5px; left: 31.98px;"><textarea autocorrect="off" autocapitalize="off" spellcheck="false" tabindex="0" style="position: absolute; bottom: -1em; padding: 0px; width: 1000px; height: 1em; outline: none;"></textarea></div><div class="CodeMirror-scrollbar-filler" cm-not-content="true"></div><div class="CodeMirror-gutter-filler" cm-not-content="true"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 28px; margin-bottom: 0px; border-right-width: 0px; padding-right: 0px; padding-bottom: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines" role="presentation"><div role="presentation" style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre><div class="CodeMirror-linenumber CodeMirror-gutter-elt"><div>4</div></div></div><div class="CodeMirror-measure"></div><div style="position: relative; z-index: 1;"></div><div class="CodeMirror-code" role="presentation"><div class="CodeMirror-activeline" style="position: relative;"><div class="CodeMirror-activeline-background CodeMirror-linebackground"></div><div class="CodeMirror-gutter-background CodeMirror-activeline-gutter" style="left: -27.99px; width: 28px;"></div><div class="CodeMirror-gutter-wrapper CodeMirror-activeline-gutter" style="left: -27.99px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt CodeMirror-linenumber-show" style="left: 0px; width: 19px;">1</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">目录结构:</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -27.99px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 19px;">2</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">|-- 文件: ce.icns</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -27.99px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt" style="left: 0px; width: 19px;">3</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">|-- 文件: ce.ico</span></pre></div><div style="position: relative;"><div class="CodeMirror-gutter-wrapper" style="left: -27.99px;"><div class="CodeMirror-linenumber CodeMirror-gutter-elt CodeMirror-linenumber-show" style="left: 0px; width: 19px;">4</div></div><pre class=" CodeMirror-line " role="presentation"><span role="presentation" style="padding-right: 0.1px;">|-- 文件: ce.png</span></pre></div></div></div></div></div></div><div style="position: absolute; height: 0px; width: 1px; border-bottom: 0px solid transparent; top: 84px;"></div><div class="CodeMirror-gutters" style="height: 84px;"><div class="CodeMirror-gutter CodeMirror-linenumbers" style="width: 27px;"></div></div></div></div></pre><h3 id='115-manual'><span>1.1.5. manual</span></h3><p><span>(空文件夹)</span></p><h2 id='12-initpy'><span>1.2. </span><strong><span>init</span></strong><span>.py</span></h2><p><span>（空文件，无函数或类需要说明）</span></p><h2 id='13-license'><span>1.3. LICENSE</span></h2><p><span>GNU GENERAL PUBLIC LICENSE</span>
+<span>                       Version 3, 29 June 2007</span></p><p><span> Copyright (C) 2007 Free Software Foundation, Inc. </span><a href='https://fsf.org/' target='_blank' class='url'>https://fsf.org/</a>
+<span> Everyone is permitted to copy and distribute verbatim copies</span>
+<span> of this license document, but changing it is not allowed.</span></p><h2 id='14-mainpy'><span>1.4. main.py</span></h2><p><span>这个 </span><code>main.py</code><span> 文件是一个 Python 程序的入口文件，负责初始化配置、路径处理，主要用于启动一个 GUI 应用程序。以下是对其功能的详细解释：</span></p><h3 id='141-导入模块'><span>1.4.1. </span><strong><span>导入模块</span></strong></h3><ul><li><p><strong><span>内置模块</span></strong><span>：</span><code>sys</code><span>, </span><code>os</code><span>, </span><code>shutil</code><span> 用于处理系统路径、文件操作等。</span></p></li><li><p><strong><span>动态路径设置</span></strong><span>：通过 </span><code>sys.path.insert</code><span> 将项目根目录添加到 Python 路径中，确保可以导入项目内的其他模块。</span></p></li><li><p><strong><span>自定义模块</span></strong><span>：从 </span><code>gui.app</code><span> 导入 </span><code>App</code><span> 类，这是程序的主要 GUI 应用类。</span></p></li></ul><h3 id='142-可调参数'><span>1.4.2. </span><strong><span>可调参数</span></strong></h3><p><span>   定义了一系列可配置的参数，用于控制程序的行为：</span></p><ul><li><p><code>dx</code><span>：积分和绘图的步长。</span></p></li><li><p><code>time_interval</code><span>：数据记录的时间间隔（毫秒）。</span></p></li><li><p><code>plot_max_points</code><span>：绘图时显示的最大数据点数。</span></p></li><li><p><code>port_timeout</code><span>：串口通信的超时时间（秒）。</span></p></li><li><p><code>std_limit</code><span>：自动寻找平台期的标准差阈值。</span></p></li><li><p><code>time_lower_limit</code><span> 和 </span><code>time_upper_limit</code><span>：平台期的最小和最大时间窗口。</span></p></li><li><p><code>width_height_inches</code><span> 和 </span><code>dpi</code><span>：保存图片的尺寸和分辨率。</span></p></li></ul><h3 id='143-主程序逻辑'><span>1.4.3. </span><strong><span>主程序逻辑</span></strong></h3><ul><li><p><strong><span>路径处理</span></strong><span>：</span></p><ul><li><p><span>检查程序是否被打包（如 PyInstaller 打包的 exe 或 macOS 的 app）。</span></p></li><li><p><span>如果是打包的程序，获取可执行文件的路径；如果是 macOS 的 app，需要向上回溯 3 层目录。</span></p></li><li><p><span>如果是直接运行的 Python 脚本，获取脚本所在的目录。</span></p></li></ul></li><li><p><strong><span>启动应用</span></strong><span>：</span></p><ul><li><p><span>创建 </span><code>App</code><span> 类的实例，传入所有可调参数和路径。</span></p></li></ul></li><li><p><strong><span>清理缓存</span></strong><span>：</span></p><ul><li><p><span>删除 </span><code>__pycache__</code><span> 目录（如果存在），避免缓存文件干扰。</span></p></li></ul></li></ul><h3 id='144-功能总结'><span>1.4.4. </span><strong><span>功能总结</span></strong></h3><ul><li><p><span>这是一个物理化学实验数据采集和分析程序的入口，主要用于：</span></p><ol start='' ><li><p><span>配置程序运行参数（如绘图、串口通信等）。</span></p></li><li><p><span>处理路径问题，确保程序在打包或直接运行时都能正确找到资源。</span></p></li><li><p><span>启动 GUI 应用（</span><code>App</code><span> 类）。</span></p></li><li><p><span>清理临时文件。</span></p></li></ol></li></ul><h3 id='145-备注'><span>1.4.5. </span><strong><span>备注</span></strong></h3><ul><li><p><span>程序参考了北京大学的物理化学实验项目设计，是一个非盈利软件。</span></p></li><li><p><span>支持 Windows 和 macOS 平台，通过 </span><code>main-win.exe</code><span> 或 </span><code>main-mac.app</code><span> 启动。</span></p></li><li><p><span>如果运行异常，可以通过 </span><code>requirements-win.exe</code><span> 或 </span><code>requirements-mac.app</code><span> 安装依赖。</span></p></li></ul><h2 id='15-readmemd'><span>1.5. README.md</span></h2><p><span>说明文件</span></p><h2 id='16-requirementstxt'><span>1.6. requirements.txt</span></h2><p><span>依赖文件</span></p></div></div>
+</body>
+</html>

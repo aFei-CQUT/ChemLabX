@@ -6,21 +6,28 @@ import os
 
 # 动态获取路径
 current_script_path = os.path.abspath(__file__)
-project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(current_script_path))))
+project_root = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.dirname(current_script_path)))
+)
 sys.path.insert(0, project_root)
 
-import logging
 import zipfile
 import numpy as np
+import logging
+import matplotlib.pyplot as plt
+
+# 配置日志设置
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
+
+# 设置matplotlib日志级别为ERROR，避免显示findfont的DEBUG信息
+logging.getLogger("matplotlib.font_manager").setLevel(logging.ERROR)
+
 from scipy.integrate import trapezoid
 from scipy.interpolate import interp1d
 
 from gui.screens.calculators.extraction_calculator import Extraction_Calculator
-
-# 配置日志设置
-logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")
-
-import matplotlib.pyplot as plt
 
 
 class Extraction_Plotter:
@@ -106,7 +113,7 @@ class Extraction_Plotter:
         if not os.path.exists(self.output_dir):
             os.makedirs(self.output_dir)
 
-    def plot_main_curves(self):
+    def plot_origin_curves(self):
         """绘制主分析曲线图"""
         plt.figure(figsize=(10, 8), facecolor="white")
 
@@ -160,7 +167,9 @@ class Extraction_Plotter:
 
         # 生成直线数据
         X_line = np.linspace(0, X_points[0], 100)
-        Y_line = eval(f"self.calculator.k{idx+1}") * X_line + eval(f"self.calculator.b{idx+1}")
+        Y_line = eval(f"self.calculator.k{idx+1}") * X_line + eval(
+            f"self.calculator.b{idx+1}"
+        )
 
         # 绘制元素
         plt.scatter(
@@ -187,7 +196,9 @@ class Extraction_Plotter:
         """计算决定系数"""
         y_pred = np.polyval(self.calculator.coefficients, self.calculator.X3_data)
         ss_res = np.sum((self.calculator.Y3_data - y_pred) ** 2)
-        ss_tot = np.sum((self.calculator.Y3_data - np.mean(self.calculator.Y3_data)) ** 2)
+        ss_tot = np.sum(
+            (self.calculator.Y3_data - np.mean(self.calculator.Y3_data)) ** 2
+        )
         return 1 - (ss_res / ss_tot)
 
     def plot_integration_curves(self):
@@ -238,7 +249,9 @@ class Extraction_Plotter:
             color="#8c564b",  # 棕色
             label="积分区域",
         )
-        plt.plot(Y_smooth, integrand_smooth, color="#1f77b4", lw=2, label="拟合曲线")  # 蓝色
+        plt.plot(
+            Y_smooth, integrand_smooth, color="#1f77b4", lw=2, label="拟合曲线"
+        )  # 蓝色
         plt.scatter(
             data["Y5_Eb"],
             data["integrand"],
@@ -285,16 +298,18 @@ class Extraction_Plotter:
             for root, _, files in os.walk(self.output_dir):
                 for file in files:
                     file_path = os.path.join(root, file)
-                    zipf.write(file_path, arcname=os.path.relpath(file_path, self.output_dir))
+                    zipf.write(
+                        file_path, arcname=os.path.relpath(file_path, self.output_dir)
+                    )
 
 
 if __name__ == "__main__":
     # 文件路径
-    main_csv = "./1_原始数据记录.csv"
-    distribution_csv = "./3_分配曲线数据集.csv"
+    origin_csv = "./csv_data/萃取/萃取原始数据记录表(非)/1_原始数据记录.csv"
+    distribution_csv = "./csv_data/萃取/萃取原始数据记录表(非)/3_分配曲线数据集.csv"
 
     # 初始化计算器
-    calculator = Extraction_Calculator(main_csv, distribution_csv)
+    calculator = Extraction_Calculator(origin_csv, distribution_csv)
     calculator.run_calculations()
 
     # 初始化绘图器
@@ -302,7 +317,7 @@ if __name__ == "__main__":
     plotter.create_output_dir()
 
     # 生成图表
-    plotter.plot_main_curves()
+    plotter.plot_origin_curves()
     plotter.plot_integration_curves()
 
     # 打包结果

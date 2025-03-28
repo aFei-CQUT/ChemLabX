@@ -4,10 +4,11 @@
 import sys
 import os
 
-
 # 动态获取路径
 current_script_path = os.path.abspath(__file__)
-project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(current_script_path))))
+project_root = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.dirname(current_script_path)))
+)
 sys.path.insert(0, project_root)
 
 from pathlib import Path
@@ -21,8 +22,11 @@ import warnings
 warnings.filterwarnings("ignore")
 
 
-from gui.screens.calculators.oxygen_desorption_calculator import Oxygen_Desorption_Calculator
+from gui.screens.calculators.oxygen_desorption_calculator import (
+    Oxygen_Desorption_Calculator,
+)
 from gui.screens.calculators.oxygen_desorption_calculator import Packed_Tower_Calculator
+from gui.screens.calculators.oxygen_desorption_calculator import Experiment_Data_Loader
 
 
 class Packed_Tower_Plotter:
@@ -37,17 +41,21 @@ class Packed_Tower_Plotter:
     def plot_comparison(self, save_path=None):
         plt.figure(figsize=(10, 6))
 
-        # 确保有分析结果
+        # 确保有计算结果
         if not self.calculator.results:
-            raise ValueError("没有可用的分析结果，请先运行analyze_all_files()")
+            raise ValueError("没有可用的计算结果，请先运行calc_all_files()")
 
         # 绘制干填料数据
-        dry_data = next((r for r in self.calculator.results if "干填料" in r["csv_file"]), None)
+        dry_data = next(
+            (r for r in self.calculator.results if "干填料" in r["csv_file"]), None
+        )
         if dry_data:
             self._plot_single(dry_data, "干填料", "red")
 
         # 绘制湿填料数据
-        wet_data = next((r for r in self.calculator.results if "湿填料" in r["csv_file"]), None)
+        wet_data = next(
+            (r for r in self.calculator.results if "湿填料" in r["csv_file"]), None
+        )
         if wet_data:
             self._plot_single(wet_data, "湿填料", "blue")
 
@@ -105,9 +113,9 @@ class Oxygen_Desorption_Plotter:
     def plot_correlation(self, save_path=None):
         plt.figure(figsize=(8, 8))
 
-        # 确保有分析结果
+        # 确保有计算结果
         if not self.calculator.results:
-            raise ValueError("没有可用的分析结果，请先运行analyze_all_files()")
+            raise ValueError("没有可用的计算结果，请先运行calc_all_files()")
 
         for result in self.calculator.results:
             csv_file = result["csv_file"]
@@ -138,30 +146,28 @@ class ExperimentUtils:
 
 # ====================== 主程序 ======================
 if __name__ == "__main__":
-    from gui.screens.calculators.oxygen_desorption_calculator import (
-        ExperimentDataLoader,
-        Packed_Tower_Calculator,
-        Oxygen_Desorption_Calculator,
-    )
-
     try:
-        # 初始化数据加载器，直接传入四个文件的全路径
-        data_loader = ExperimentDataLoader(
-            dry_packed="./csv_data/解吸原始记录表(非)/干填料.csv",
-            wet_packed="./csv_data/解吸原始记录表(非)/湿填料.csv",
-            water_constant="./csv_data/解吸原始记录表(非)/水流量一定_空气流量改变.csv",
-            air_constant="./csv_data/解吸原始记录表(非)/空气流量一定_水流量改变.csv",
+        # 使用更清晰的标识符初始化
+        data_loader = Experiment_Data_Loader(
+            dry_packed=Path(project_root)
+            / "csv_data/解吸/解吸原始记录表(非)/干填料.csv",
+            wet_packed=Path(project_root)
+            / "csv_data/解吸/解吸原始记录表(非)/湿填料.csv",
+            water_constant=Path(project_root)
+            / "csv_data/解吸/解吸原始记录表(非)/水流量一定_空气流量改变.csv",
+            air_constant=Path(project_root)
+            / "csv_data/解吸/解吸原始记录表(非)/空气流量一定_水流量改变.csv",
         )
 
-        # 填料塔分析
+        # 填料塔计算
         tower_calculator = Packed_Tower_Calculator(data_loader)
-        tower_calculator.analyze_all_files()
+        tower_calculator.calc_all_files()
         tower_plotter = Packed_Tower_Plotter(tower_calculator)
         tower_plotter.plot_comparison()
 
-        # 氧解吸分析
+        # 氧解吸计算
         oxygen_calculator = Oxygen_Desorption_Calculator(data_loader)
-        oxygen_calculator.analyze_all_files()
+        oxygen_calculator.calc_all_files()
         oxygen_plotter = Oxygen_Desorption_Plotter(oxygen_calculator)
         oxygen_plotter.plot_correlation()
 

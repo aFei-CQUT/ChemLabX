@@ -6,7 +6,9 @@ import os
 
 # 动态获取项目根路径
 current_script_path = os.path.abspath(__file__)
-project_root = os.path.dirname(os.path.dirname(os.path.dirname(current_script_path)))
+project_root = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.dirname(current_script_path)))
+)
 sys.path.insert(0, project_root)
 
 import zipfile
@@ -91,8 +93,8 @@ class Heat_Transfer_Experiment_Processor:
         """
         将生成的图像文件压缩成一个zip文件，便于分发和存储。
         """
-        dir_to_zip = r"./传热拟合图结果"  # 存放结果的目录
-        dir_to_save = r"./传热实验结果.zip"  # 目标zip文件路径
+        dir_to_zip = r"./拟合图结果"  # 存放结果的目录
+        dir_to_save = r"./拟合图结果.zip"  # 目标zip文件路径
 
         # 检查结果目录是否存在
         if not os.path.exists(dir_to_zip):
@@ -110,35 +112,39 @@ class Heat_Transfer_Experiment_Processor:
         # 打印压缩完成的确认信息
         print(f"压缩完成。文件已保存为: {dir_to_save}")
 
-    def generate_summary_report(self):
+    def fit_data_summary(self):
         """
-        生成实验数据摘要报告
+        生成实验拟合数据
         """
-        report = []
+        summary = []
         for data in self.processed_data:
-            report.append(
+            summary.append(
                 {
                     "实验类型": data["type"],
                     "数据点数": len(data["data_for_fit"]),
-                    "拟合参数A": (data["params"][0] if data["params"] is not None else "N/A"),
-                    "拟合参数B": (data["params"][1] if data["params"] is not None else "N/A"),
+                    "拟合参数A": (
+                        data["params"][0] if data["params"] is not None else "N/A"
+                    ),
+                    "拟合参数B": (
+                        data["params"][1] if data["params"] is not None else "N/A"
+                    ),
                 }
             )
 
-        report_df = pd.DataFrame(report)
-        report_path = "./传热拟合图结果/实验摘要.csv"
-        os.makedirs(os.path.dirname(report_path), exist_ok=True)
-        report_df.to_csv(report_path, index=False, encoding="utf_8_sig")
-        print(f"实验摘要已保存至: {report_path}")
+        summary_df = pd.DataFrame(summary)
+        summary_path = "./拟合图结果/拟合数据.csv"
+        os.makedirs(os.path.dirname(summary_path), exist_ok=True)
+        summary_df.to_csv(summary_path, index=False, encoding="utf_8_sig")
+        print(f"拟合数据已保存至: {summary_path}")
 
 
 if __name__ == "__main__":
     # 定义CSV文件路径列表
     csv_file_paths = [
-        "原始数据-无强化套管.csv",
-        "原始数据-有强化套管.csv",
-        "数据预处理-无强化套管.csv",
-        "数据预处理-有强化套管.csv",
+        "./csv_data/传热/传热原始数据记录表(非)/原始数据_无强化套管.csv",
+        "./csv_data/传热/传热原始数据记录表(非)/原始数据_有强化套管.csv",
+        "./csv_data/传热/传热原始数据记录表(非)/数据预处理_无强化套管.csv",
+        "./csv_data/传热/传热原始数据记录表(非)/数据预处理_有强化套管.csv",
     ]
 
     # 初始化处理类
@@ -153,8 +159,8 @@ if __name__ == "__main__":
     # 第三步：基于处理后的数据生成图形
     processor.plot()
 
-    # 第四步：生成实验摘要报告
-    processor.generate_summary_report()
+    # 第四步：生成拟合结果报告
+    processor.fit_data_summary()
 
     # 第五步：压缩结果图像文件为zip文件
     processor.compress_results()

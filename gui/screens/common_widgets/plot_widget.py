@@ -6,7 +6,9 @@ import os
 
 # 动态获取路径
 current_script_path = os.path.abspath(__file__)
-project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(current_script_path))))
+project_root = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.dirname(current_script_path)))
+)
 sys.path.insert(0, project_root)
 
 from tkinter import ttk
@@ -25,27 +27,24 @@ class PlotWidget(ttk.Frame):
         """
         super().__init__(master, **kwargs)
 
-        # 强制填满父容器
-        self.pack_propagate(False)
-        self.grid_propagate(False)
+        # 主容器采用 grid 布局
+        self.grid_rowconfigure(0, weight=1)  # 绘图区域占主要空间
+        self.grid_rowconfigure(1, weight=0)  # 分页控件固定高度
+        self.grid_columnconfigure(0, weight=1)
 
-        # 创建Matplotlib图形（最小化边距）
+        # 创建绘图区域容器
+        self.plot_container = ttk.Frame(self)
+        self.plot_container.grid(row=0, column=0, sticky="nsew")
+
+        # 初始化Matplotlib画布（放在plot_container中）
         self.figure = Figure(dpi=100)
         self.figure.subplots_adjust(left=0.01, right=0.99, top=0.99, bottom=0.01)
-
-        # 创建子图并配置样式
         self.ax = self.figure.add_subplot(111)
         self._set_plot_style()
-
-        # 创建并布置画布
-        self.canvas = FigureCanvasTkAgg(self.figure, master=self)
+        self.canvas = FigureCanvasTkAgg(self.figure, master=self.plot_container)
         self.canvas.get_tk_widget().pack(fill="both", expand=True)
 
-        # 初始化图像相关属性
-        self.images_paths = []
-        self.current_page = 0
-
-        # 创建分页控件
+        # 创建分页控件（单独容器，放在主容器底部）
         self._create_pagination_controls()
 
         # 绑定窗口大小改变事件
@@ -56,7 +55,14 @@ class PlotWidget(ttk.Frame):
         # 隐藏所有刻度和标签
         self.ax.set_xticks([])
         self.ax.set_yticks([])
-        self.ax.tick_params(axis="both", which="both", bottom=False, left=False, labelbottom=False, labelleft=False)
+        self.ax.tick_params(
+            axis="both",
+            which="both",
+            bottom=False,
+            left=False,
+            labelbottom=False,
+            labelleft=False,
+        )
 
         # 设置边框样式
         for spine in self.ax.spines.values():
@@ -98,11 +104,11 @@ class PlotWidget(ttk.Frame):
             img = pilImage.open(self.images_paths[self.current_page])
             self.clear()
 
-            # 直接填充整个坐标系
-            self.ax.imshow(img, extent=[0, 1, 0, 1], aspect="auto")
-            self.ax.set_xlim(0, 1)
-            self.ax.set_ylim(0, 1)
+            # 直接填充整个坐标系，使用自动调整范围
+            self.ax.imshow(img, aspect="auto")
+            self.ax.autoscale()  # 自动调整坐标轴范围
 
+            self._set_plot_style()  # 确保spines样式应用
             self.canvas.draw()
             self._update_page_controls()
         except Exception as e:
@@ -111,23 +117,94 @@ class PlotWidget(ttk.Frame):
     def resize_image(self, event):
         """响应窗口大小变化"""
         if event.width > 0 and event.height > 0:
-            self.figure.set_size_inches(event.width / self.figure.dpi, event.height / self.figure.dpi)
+            self.figure.set_size_inches(
+                event.width / self.figure.dpi, event.height / self.figure.dpi
+            )
+            # 重新设置spines样式并调整坐标轴范围
+            self._set_plot_style()
+            self.ax.set_xlim(self.ax.get_xlim())  # 保持当前范围或自动调整
+            self.ax.set_ylim(self.ax.get_ylim())
             self.canvas.draw()
 
-    # 保留其他原有方法（分页控制等）...
     def _create_pagination_controls(self):
-        """创建分页控制按钮组件"""
+        """分页控件居中布局 + 页码美化"""
         control_frame = ttk.Frame(self)
-        control_frame.pack(side="bottom", fill="x", pady=2)
+        control_frame.grid(row=1, column=0, sticky="ew", pady=5)
 
-        self.prev_btn = ttk.Button(control_frame, text="上一页", command=self.prev_page, state="disabled")
-        self.prev_btn.pack(side="left", padx=5)
+        # 配置分页控件的样式
+        self._configure_pagination_style()
 
-        self.page_label = ttk.Label(control_frame, text="第1页/共0页")
-        self.page_label.pack(side="left", padx=5)
+        # 主容器使用 Pack 布局实现居中
+        inner_frame = ttk.Frame(control_frame)
+        inner_frame.pack(expand=True, anchor="center")  # 关键：让内部框架居中
 
-        self.next_btn = ttk.Button(control_frame, text="下一页", command=self.next_page, state="disabled")
-        self.next_btn.pack(side="left", padx=5)
+        # 按钮和页码使用 Grid 布局
+        inner_frame.columnconfigure(0, weight=1)
+        inner_frame.columnconfigure(1, weight=0)
+        inner_frame.columnconfigure(2, weight=1)
+
+        # 上一页按钮（左侧弹性空间）
+        left_space = ttk.Frame(inner_frame, width=10)
+        left_space.grid(row=0, column=0, sticky="ew")
+
+        # 按钮组
+        btn_frame = ttk.Frame(inner_frame)
+        btn_frame.grid(row=0, column=1, padx=5)
+
+        self.prev_btn = ttk.Button(
+            btn_frame,
+            text="◀ 上一页",
+            command=self.prev_page,
+            style="Pagination.TButton",
+        )
+        self.prev_btn.pack(side="left", padx=2)
+
+        self.page_label = ttk.Label(
+            btn_frame, text="第1页/共0页", style="Pagination.TLabel", padding=(10, 0)
+        )
+        self.page_label.pack(side="left", padx=2)
+
+        self.next_btn = ttk.Button(
+            btn_frame,
+            text="下一页 ▶",
+            command=self.next_page,
+            style="Pagination.TButton",
+        )
+        self.next_btn.pack(side="left", padx=2)
+
+        # 右侧弹性空间
+        right_space = ttk.Frame(inner_frame, width=10)
+        right_space.grid(row=0, column=2, sticky="ew")
+
+    def _configure_pagination_style(self):
+        """配置分页控件样式"""
+        style = ttk.Style()
+
+        # 按钮样式：扁平化设计
+        style.configure(
+            "Pagination.TButton",
+            font=("微软雅黑", 9),
+            borderwidth=0,
+            relief="flat",
+            foreground="#666666",
+        )
+        style.map(
+            "Pagination.TButton",
+            foreground=[("disabled", "#CCCCCC"), ("active", "#2C7BE5")],
+            background=[("disabled", "white"), ("active", "white")],
+        )
+
+        # 页码标签样式：现代感设计
+        style.configure(
+            "Pagination.TLabel",
+            font=("微软雅黑", 10, "bold"),
+            foreground="#2C7BE5",
+            background="white",
+            padding=(10, 2),
+            bordercolor="#E5E9F2",
+            relief="solid",
+            anchor="center",
+        )
 
     def set_images_paths(self, images_paths):
         self.images_paths = images_paths
@@ -139,7 +216,13 @@ class PlotWidget(ttk.Frame):
         total = len(self.images_paths)
         self.page_label.config(text=f"第{self.current_page+1}页/共{total}页")
         self.prev_btn.config(state="normal" if self.current_page > 0 else "disabled")
-        self.next_btn.config(state="normal" if self.current_page < len(self.images_paths) - 1 else "disabled")
+        self.next_btn.config(
+            state=(
+                "normal"
+                if self.current_page < len(self.images_paths) - 1
+                else "disabled"
+            )
+        )
 
     def prev_page(self):
         if self.current_page > 0:

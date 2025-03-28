@@ -6,7 +6,9 @@ import os
 
 # 动态获取路径
 current_script_path = os.path.abspath(__file__)
-project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(current_script_path))))
+project_root = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.dirname(current_script_path)))
+)
 sys.path.insert(0, project_root)
 
 
@@ -16,7 +18,9 @@ import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 
 from gui.screens.calculators.fluid_flow_calculator import Fluid_Flow_Calculator
-from gui.screens.calculators.fluid_flow_calculator import Centrifugal_Pump_Characteristics_Calculator
+from gui.screens.calculators.fluid_flow_calculator import (
+    Centrifugal_Pump_Characteristics_Calculator,
+)
 from gui.screens.calculators.fluid_flow_calculator import Auxiliary
 
 
@@ -154,7 +158,9 @@ class PlotManager:
             fluid_plotter.plot()
 
         if "pump" in self.results:
-            pump_calculator = Centrifugal_Pump_Characteristics_Calculator(self.auxiliary.file_paths[1])
+            pump_calculator = Centrifugal_Pump_Characteristics_Calculator(
+                self.auxiliary.file_paths[1]
+            )
             pump_calculator.process()
             pump_plotter = Centrifugal_Pump_Characteristics_Plotter(pump_calculator)
             pump_plotter.plot()

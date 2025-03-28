@@ -16,6 +16,7 @@ import ttkbootstrap as ttk
 from tkinter import PhotoImage
 
 # 导入屏幕类
+from gui.screens.common_screens.base_screen import Base_Screen
 from gui.screens.filteration_screen import Filteration_Screen
 from gui.screens.heat_transfer_screen import Heat_Transfer_Screen
 from gui.screens.extraction_screen import Extraction_Screen
@@ -28,7 +29,9 @@ from gui.screens.fluid_flow_screen import Fluid_Flow_Screen
 from gui.screens.utils.config import *
 
 # 配置日志记录
-logging.basicConfig(level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s")
+logging.basicConfig(
+    level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 
 class App:
@@ -65,7 +68,7 @@ class App:
         # 初始化窗口
         DATA_CONFIG["window"] = ttk.Window(
             themename="sandstone",
-            title="实验数据采集与处理软件 v1.0.0",
+            title="ChemLabX1.0",
         )
 
         try:
@@ -105,6 +108,7 @@ class App:
 
         # 创建所有屏幕实例
         self.screens = {
+            "base_screen": Base_Screen(DATA_CONFIG["window"]),
             "filteration_screen": Filteration_Screen(DATA_CONFIG["window"]),
             "heat_transfer_screen": Heat_Transfer_Screen(DATA_CONFIG["window"]),
             "extraction_screen": Extraction_Screen(DATA_CONFIG["window"]),
@@ -121,7 +125,7 @@ class App:
         self._create_mode_menu()
 
         # 默认显示过滤实验屏幕
-        self.show_screen("filteration_screen")
+        self.show_screen("base_screen")
 
         # 主事件循环
         DATA_CONFIG["window"].mainloop()
@@ -137,13 +141,31 @@ class App:
         menubar.add_cascade(label="实验模式", menu=mode_menu)
 
         # 创建菜单项
-        mode_menu.add_command(label="过滤实验", command=lambda: self.show_screen("filteration_screen"))
-        mode_menu.add_command(label="传热实验", command=lambda: self.show_screen("heat_transfer_screen"))
-        mode_menu.add_command(label="萃取实验", command=lambda: self.show_screen("extraction_screen"))
-        mode_menu.add_command(label="干燥实验", command=lambda: self.show_screen("drying_screen"))
-        mode_menu.add_command(label="解析实验", command=lambda: self.show_screen("oxygen_desorption_screen"))
-        mode_menu.add_command(label="精馏实验", command=lambda: self.show_screen("distillation_screen"))
-        mode_menu.add_command(label="流体实验", command=lambda: self.show_screen("fluid_flow_screen"))
+        mode_menu.add_command(
+            label="基础模式", command=lambda: self.show_screen("base_screen")
+        )
+        mode_menu.add_command(
+            label="过滤实验", command=lambda: self.show_screen("filteration_screen")
+        )
+        mode_menu.add_command(
+            label="传热实验", command=lambda: self.show_screen("heat_transfer_screen")
+        )
+        mode_menu.add_command(
+            label="萃取实验", command=lambda: self.show_screen("extraction_screen")
+        )
+        mode_menu.add_command(
+            label="干燥实验", command=lambda: self.show_screen("drying_screen")
+        )
+        mode_menu.add_command(
+            label="解吸实验",
+            command=lambda: self.show_screen("oxygen_desorption_screen"),
+        )
+        mode_menu.add_command(
+            label="精馏实验", command=lambda: self.show_screen("distillation_screen")
+        )
+        mode_menu.add_command(
+            label="流体实验", command=lambda: self.show_screen("fluid_flow_screen")
+        )
 
     def show_screen(self, screen_name):
         """显示指定的屏幕"""
@@ -167,7 +189,7 @@ class App:
             self.show_screen("extraction_screen")
         elif event == "干燥":
             self.show_screen("drying_screen")
-        elif event == "解析":
+        elif event == "解吸":
             self.show_screen("oxygen_desorption_screen")
         elif event == "精馏":
             self.show_screen("distillation_screen")

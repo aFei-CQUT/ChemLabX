@@ -6,7 +6,9 @@ import os
 
 # 动态获取路径
 current_script_path = os.path.abspath(__file__)
-project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(current_script_path))))
+project_root = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.dirname(current_script_path)))
+)
 sys.path.insert(0, project_root)
 
 import pandas as pd
@@ -317,7 +319,9 @@ def process_and_save(file_path, R, αm, F, tS, tF, filename):
     """处理并保存结果的辅助函数"""
     try:
         # 创建计算器实例
-        calculator = Distillation_Calculator(file_path=file_path, R=R, αm=αm, F=F, tS=tS, tF=tF)
+        calculator = Distillation_Calculator(
+            file_path=file_path, R=R, αm=αm, F=F, tS=tS, tF=tF
+        )
 
         # 打印关键结果
         print("\n精馏塔计算结果:")
@@ -356,10 +360,14 @@ if __name__ == "__main__":
 
     # 第一组计算: R = 4 时
     print("\n>>> 计算条件: R = 4 <<<")
-    calc1 = process_and_save(file_path=file_path, R=4, αm=2.0, F=80, tS=30, tF=26, filename="R_4_结果")
+    calc1 = process_and_save(
+        file_path=file_path, R=4, αm=2.0, F=80, tS=30, tF=26, filename="R_4_结果"
+    )
 
     # 第二组计算: R --> ∞时
     print("\n>>> 计算条件: R --> ∞ <<<")
-    calc2 = process_and_save(file_path=file_path, R=10000, αm=2.0, F=80, tS=30, tF=26, filename="R_+∞_结果")
+    calc2 = process_and_save(
+        file_path=file_path, R=10000, αm=2.0, F=80, tS=30, tF=26, filename="R_+∞_结果"
+    )
 
     print("\n计算完成，两组结果已分别保存至计算结果目录")

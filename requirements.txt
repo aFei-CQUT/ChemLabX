@@ -1,19 +1,39 @@
-# === python版本 ===
-# python = 3.9.21
+# # Python 版本要求
+# # 该项目使用 Python 3.9.21 版本
+# python==3.9.21
 
-# === 第三方核心科学计算库 ===
-numpy
-pandas
-matplotlib
-scikit-learn
+# # 标准库
+# # Python 标准库无需通过 pip 安装，但列出以便记录
+# sys
+# os
+# shutil
+# re
+# time
+# tkinter
+# csv
 
-# === 数据处理与文件操作 ===
-openpyxl                    # 处理 Excel 文件
-opencv-python               # OpenCV 图像处理
+# 第三方核心科学计算库
+numpy               # 数值计算库
+pandas              # 数据处理和分析库
+matplotlib          # 数据可视化库
+scikit-learn        # 机器学习库
 
-# === GUI 相关依赖 ===
-ttkbootstrap                # 第三方主题库（确保名称正确，PyPI 上的包名为 ttkthemes）
+# 数据处理与文件操作
+openpyxl            # Excel 文件处理库
+opencv-python       # OpenCV 图像处理库
 
-# === 标准库（无需安装，仅作说明） ===
-# logging       --> Python 内置
-# tkinter       --> Python 内置
+# GUI 相关
+ttkbootstrap        # 用于 Tkinter 的增强样式库
+
+# 串口通信
+pyserial            # 串口通信库
+
+# 图像处理
+Pillow              # 图像处理库
+
+# 科学计算
+scipy               # 科学计算库
+sympy               # 符号计算库
+
+# 其他工具库
+python-dateutil     # 用于日志时间处理

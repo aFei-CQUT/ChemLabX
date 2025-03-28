@@ -8,7 +8,9 @@ from matplotlib.ticker import AutoMinorLocator
 
 # 动态获取路径
 current_script_path = os.path.abspath(__file__)
-project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(current_script_path))))
+project_root = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.dirname(current_script_path)))
+)
 sys.path.insert(0, project_root)
 
 # from gui.screens.calculators.distillation_calculator import Distillation_Calculator
@@ -108,15 +110,42 @@ class Distillation_Plotter:
         fig, ax = plt.subplots(figsize=self.figure_size, dpi=self.dpi)
 
         # 绘制主要曲线
-        ax.plot(data["x"], data["x"], linestyle="-", color="gray", alpha=0.5, label="对角线")
-        ax.plot(data["x"], data["y_eq"], **self.line_styles["equilibrium"], label="平衡线")
-        ax.plot(data["x"], data["y_rect"], **self.line_styles["operating"], label="精馏段操作线")
-        ax.plot(data["x"], data["y_strip"], **self.line_styles["operating"], label="提馏段操作线")
+        ax.plot(
+            data["x"], data["x"], linestyle="-", color="gray", alpha=0.5, label="对角线"
+        )
+        ax.plot(
+            data["x"], data["y_eq"], **self.line_styles["equilibrium"], label="平衡线"
+        )
+        ax.plot(
+            data["x"],
+            data["y_rect"],
+            **self.line_styles["operating"],
+            label="精馏段操作线",
+        )
+        ax.plot(
+            data["x"],
+            data["y_strip"],
+            **self.line_styles["operating"],
+            label="提馏段操作线",
+        )
         ax.plot(data["x"], data["y_q"], **self.line_styles["q_line"], label="q线")
 
         # 绘制阶梯图
-        ax.plot(self.calc.xn, self.calc.yn, marker="+", markersize=10, linestyle="", color="red", label="理论塔板点")
-        ax.plot(data["x_stages"], data["y_stages"], **self.line_styles["stages"], label=f"理论塔板 ({self.calc.NT}块)")
+        ax.plot(
+            self.calc.xn,
+            self.calc.yn,
+            marker="+",
+            markersize=10,
+            linestyle="",
+            color="red",
+            label="理论塔板点",
+        )
+        ax.plot(
+            data["x_stages"],
+            data["y_stages"],
+            **self.line_styles["stages"],
+            label=f"理论塔板 ({self.calc.NT}块)",
+        )
 
         # 标记关键点
         key_points = [
@@ -140,7 +169,11 @@ class Distillation_Plotter:
         ax.set_ylim(0, 1)
         ax.set_xlabel("液相摩尔分数 (x)", fontsize=12)
         ax.set_ylabel("气相摩尔分数 (y)", fontsize=12)
-        ax.set_title(f"McCabe-Thiele法图解理论板数\n(回流比 R={self.calc.R}, q={self.calc.q:.2f})", fontsize=14, pad=20)
+        ax.set_title(
+            f"McCabe-Thiele法图解理论板数\n(回流比 R={self.calc.R}, q={self.calc.q:.2f})",
+            fontsize=14,
+            pad=20,
+        )
 
         # 添加网格和刻度
         ax.grid(True, linestyle=":", alpha=0.6)
@@ -180,7 +213,13 @@ if __name__ == "__main__":
 
     # 1. R -> 4
     calculator = process_and_save(
-        file_path="./csv_data/精馏/精馏原始记录表(非)/Sheet1.csv", R=4, αm=2.0, F=80, tS=30, tF=26, filename="R_4_结果"
+        file_path="./csv_data/精馏/精馏原始记录表(非)/Sheet1.csv",
+        R=4,
+        αm=2.0,
+        F=80,
+        tS=30,
+        tF=26,
+        filename="R_4_结果",
     )
 
     if calculator:  # 如果计算成功
