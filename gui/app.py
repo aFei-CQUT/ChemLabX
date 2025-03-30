@@ -33,6 +33,8 @@ logging.basicConfig(
     level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
+from gui.screens.utils.smooth_resize_window import Smooth_Resize_Window
+
 
 class App:
     """
@@ -132,11 +134,9 @@ class App:
 
     def _create_mode_menu(self):
         """创建模式切换菜单"""
-        # 创建菜单栏
         menubar = ttk.Menu(DATA_CONFIG["window"])
         DATA_CONFIG["window"].config(menu=menubar)
 
-        # 创建实验模式菜单
         mode_menu = ttk.Menu(menubar, tearoff=0)
         menubar.add_cascade(label="实验模式", menu=mode_menu)
 
@@ -175,6 +175,12 @@ class App:
         if screen_name in self.screens:
             self.current_screen = self.screens[screen_name]
             self.current_screen.pack(fill="both", expand=True)
+
+            # 只有在切换到非基础模式的界面时才触发抖动
+            if screen_name != "base_screen":
+                # 触发抖动效果
+                self.smooth_resize = Smooth_Resize_Window(DATA_CONFIG["window"])
+                self.smooth_resize.start()
         else:
             logging.error(f"未知屏幕名称: {screen_name}")
 
