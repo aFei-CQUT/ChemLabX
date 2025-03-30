@@ -1,0 +1,1 @@
+('E:\\1.LGRepository\\ChemLabX1.0\\build\\main\\PYZ-00.pyz', [])
