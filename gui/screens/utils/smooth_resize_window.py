@@ -5,8 +5,7 @@ import sys
 import os
 import random
 import tkinter as tk
-
-import numpy as np
+import math
 
 # 动态获取路径（保持不变）
 current_script_path = os.path.abspath(__file__)
@@ -31,19 +30,19 @@ class Smooth_Resize_Window:
 
         self.window.minsize(600, 400)
 
-        # 抖动控制参数（调整为整数）
+        # 抖动控制参数
         self.max_jitter = 1  # 最大抖动幅度（整数像素）
         self.tolerance = 0.2  # 停止阈值（使用浮点判断）
-        self.fixed_increment = 0.5  # 调整步长（浮点计算）
+        self.smooth_factor = 0.4  # 平滑因子（比例缩放）
 
     def smooth_transition(self, current_size, target_size):
-        """支持浮点数运算的过渡算法"""
+        """基于比例缩放的过渡算法"""
         delta = target_size - current_size
-        if abs(delta) <= self.fixed_increment:
+        if abs(delta) <= self.tolerance:
             return target_size
-        return current_size + np.sign(delta) * self.fixed_increment
+        return current_size + delta * self.smooth_factor
 
-    def start(self, interval=50, smooth_factor=10):
+    def start(self, interval=50):
         """启动智能抖动调整"""
         # 生成基准尺寸附近的随机目标（保持整数最终值）
         target_width = self.base_width + random.randint(
@@ -53,20 +52,16 @@ class Smooth_Resize_Window:
             -self.max_jitter, self.max_jitter
         )
 
-        # 使用浮点数进行平滑计算
-        self.window_width = self.smooth_transition(
-            float(self.window_width), float(target_width)
-        )
-        self.window_height = self.smooth_transition(
-            float(self.window_height), float(target_height)
-        )
+        # 使用比例缩放进行平滑计算
+        self.window_width = self.smooth_transition(self.window_width, target_width)
+        self.window_height = self.smooth_transition(self.window_height, target_height)
 
         # 更新窗口尺寸时转换为整数
         self.window.geometry(
             f"{int(round(self.window_width))}x{int(round(self.window_height))}"
         )
 
-        # 计算实际偏差量（基于浮点值）
+        # 计算实际偏差量
         current_deviation = max(
             abs(self.window_width - target_width),
             abs(self.window_height - target_height),
@@ -79,7 +74,7 @@ class Smooth_Resize_Window:
 
         # 持续调整直到达到目标范围
         if current_deviation > self.tolerance:
-            self.window.after(adaptive_interval, self.start, interval, smooth_factor)
+            self.window.after(adaptive_interval, self.start, interval)
 
 
 # 测试代码
