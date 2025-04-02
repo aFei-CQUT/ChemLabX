@@ -55,15 +55,27 @@ time_upper_limit = 40  # 自动寻找平台期的最大时间窗口
 width_height_inches = (10, 6)  # 保存图片尺寸，单位英尺
 dpi = 600  # 保存图片DPI
 
+def clear_pycache(root_dir='.'):
+    for dirpath, dirnames, _ in os.walk(root_dir):
+        for dirname in dirnames:
+            # 如果是 __pycache__ 文件夹，删除它
+            if dirname == '__pycache__':
+                dir_to_delete = os.path.join(dirpath, dirname)
+                print(f"Deleting: {dir_to_delete}")
+                shutil.rmtree(dir_to_delete)
+
 if __name__ == "__main__":
+
     # 获取当前路径
     # 如果是pyinstaller打包的exe文件，则获取可执行文件所在目录的绝对路径
     if getattr(sys, "frozen", False):
         py_path = os.path.dirname(os.path.abspath(sys.executable))
+
         # 如果是mac
         if sys.platform == "darwin":
             for i in range(3):
                 py_path = os.path.dirname(py_path)
+
     # 如果是运行的py文件，则获取py文件所在目录的绝对路径
     else:
         py_path = os.path.dirname(os.path.abspath(__file__))
@@ -79,7 +91,6 @@ if __name__ == "__main__":
         dpi,
         py_path,
     )
-    # 清除缓存文件夹
-    pycache_dir = py_path + "/__pycache__"
-    if os.path.exists(pycache_dir):
-        shutil.rmtree(pycache_dir)
+
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    clear_pycache(script_dir)
