@@ -72,7 +72,7 @@ class Base_Screen(ttk.Frame):
     def _init_left_panel(self):
         """初始化左侧操作面板"""
         self.left_frame = ttk.Frame(self.main_paned, width=400)
-        self.main_paned.add(self.left_frame, weight=1)
+        self.main_paned.add(self.left_frame, weight=1)  # 设置权重，防止左侧区域过大
 
         # 参数输入区域
         self._init_parameter_input()
@@ -145,6 +145,19 @@ class Base_Screen(ttk.Frame):
         # 配置自适应布局
         self.right_frame.columnconfigure(0, weight=1)
         self.right_frame.rowconfigure(0, weight=1)
+
+        # 添加对窗口大小调整的监听，确保右侧面板刷新
+        self.right_frame.bind("<Configure>", self._on_right_panel_resize)
+
+    def _on_right_panel_resize(self, event):
+        """监听右侧面板大小调整"""
+        # 强制更新布局
+        self.right_frame.update_idletasks()  # 强制更新右侧面板
+        self.right_frame.after(100, self.right_frame.update)  # 延时更新，确保刷新正常
+
+        # 只在需要时刷新图形事件
+        self.after(100, self.plot_frame.canvas.flush_events)  # 延迟刷新图形事件
+        self.after(100, self.plot_frame.canvas.draw_idle)  # 延迟刷新图形
 
     @property
     def parameters(self):
