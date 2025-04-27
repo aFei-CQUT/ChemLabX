@@ -14,6 +14,7 @@ sys.path.insert(0, project_root)
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
+import matplotlib.gridspec as gridspec  # 导入 gridspec 用于布局控制
 from gui.screens.calculators.filteration_calculator import Filteration_Calculator
 
 # 设置中文字体
@@ -120,8 +121,8 @@ class Filteration_Plotter:
         # 记录图像路径
         self.images_paths.append(image_path)
 
-        # 保存图像
-        plt.savefig(image_path)
+        # 保存图像，添加 bbox_inches='tight' 以减少空白
+        plt.savefig(image_path, bbox_inches="tight")
         plt.close()
 
     def add_auxiliary_lines(self, q_list, delta_theta_over_delta_q_list):
@@ -342,12 +343,16 @@ class Filteration_Plotter:
             img = mpimg.imread(f"./拟合图结果/{i}.png")
             images.append(img)
 
-        fig, axes = plt.subplots(4, 2, figsize=(10, 12))
-        for ax, img in zip(axes.flatten(), images):
+        # 使用 gridspec 精确控制子图布局
+        fig = plt.figure(figsize=(10, 12))
+        gs = gridspec.GridSpec(4, 2, wspace=-0.20, hspace=0)  # 设置水平间距和垂直间距
+
+        for i, img in enumerate(images):
+            ax = fig.add_subplot(gs[i])
             ax.imshow(img)
             ax.axis("off")
+            ax.margins(0)  # 减小子图内部边距
 
-        plt.subplots_adjust(wspace=0.01, hspace=0.01)
         plt.savefig(r"./拟合图结果/拟合图整合图.png", bbox_inches="tight")
         # plt.show()
 
@@ -430,5 +435,4 @@ class Filteration_Plotter:
 
 if __name__ == "__main__":
     plotter = Filteration_Plotter(r"./过滤原始数据记录表(非).csv")
-
     plotter.generate_all_figures()

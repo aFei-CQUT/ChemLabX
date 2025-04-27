@@ -35,6 +35,9 @@
 import sys
 import os
 import shutil
+import numexpr as ne
+
+ne.set_num_threads(8)  # 设置 numexpr 使用的线程数
 
 # 动态获取路径
 current_script_path = os.path.abspath(__file__)
